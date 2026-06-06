@@ -1,5 +1,29 @@
 import mongoose from 'mongoose';
 
+// Side-effect imports — ensure every Mongoose model is registered before any
+// route calls populate(). In serverless environments each function bundle is
+// isolated, so populate() fails with MissingSchemaError if the referenced
+// model was never imported in that bundle. Importing here guarantees they're
+// always registered whenever connectDB() is called.
+import '@/models/User';
+import '@/models/Course';
+import '@/models/Video';
+import '@/models/Batch';
+import '@/models/Enrollment';
+import '@/models/CourseInstallment';
+import '@/models/LiveSession';
+import '@/models/Attendance';
+import '@/models/Progress';
+import '@/models/Comment';
+import '@/models/CommentDedup';
+import '@/models/Event';
+import '@/models/PDFResource';
+import '@/models/AiRequest';
+import '@/models/Rating';
+import '@/models/Promotion';
+import '@/models/PublicWebinar';
+import '@/models/Enquiry';
+
 const MONGODB_URI = process.env.MONGODB_URI!;
 
 if (!MONGODB_URI) throw new Error('MONGODB_URI not set in environment');
