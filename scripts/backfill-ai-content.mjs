@@ -9,7 +9,7 @@
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
-const MONGODB_URI = 'process.env.MONGODB_URI';
+const MONGODB_URI = process.env.MONGODB_URI;
 const TRANSCRIPT_CAP = 20_000;
 const PDF_TEXT_CAP   = 50_000;
 

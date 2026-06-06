@@ -4,7 +4,7 @@
  */
 
 const BASE = 'http://localhost:3000';
-const MONGODB_URI = 'process.env.MONGODB_URI';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const G   = (s) => `\x1b[32m${s}\x1b[0m`;
 const R   = (s) => `\x1b[31m${s}\x1b[0m`;
