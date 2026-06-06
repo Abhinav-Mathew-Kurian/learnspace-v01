@@ -1,0 +1,181 @@
+'use client';
+
+import { useState } from 'react';
+import Image from 'next/image';
+import { ArrowRight, Clock, Users, X, Radio, CalendarDays, ExternalLink } from 'lucide-react';
+import { istMonthAbbr, istDay, istTime, istDate } from '@/lib/ist';
+
+interface Webinar {
+  _id: string;
+  title: string;
+  description: string;
+  date: Date;
+  duration: number;
+  meetingUrl: string;
+  thumbnail?: string;
+  instructor: string;
+  topic: string;
+}
+
+export default function WebinarCard({ w }: { w: Webinar }) {
+  const [showDetail, setShowDetail] = useState(false);
+  const d = new Date(w.date);
+
+  return (
+    <>
+      {/* Row card */}
+      <div
+        className="flex items-center gap-4 sm:gap-5 bg-white/4 hover:bg-white/[0.07] border border-white/8 hover:border-emerald-500/40 rounded-2xl px-4 sm:px-5 py-4 transition-all group cursor-pointer"
+        onClick={() => setShowDetail(true)}
+      >
+        {/* Thumbnail / date pill */}
+        <div className="flex-shrink-0 relative w-16 h-16 rounded-xl overflow-hidden bg-emerald-500/10 border border-emerald-500/20">
+          {w.thumbnail ? (
+            <>
+              <Image src={w.thumbnail} alt={w.title} fill sizes="64px" className="object-cover" />
+              <div className="absolute bottom-0 left-0 right-0 bg-black/65 py-0.5 text-center">
+                <p className="text-[9px] font-black text-emerald-400 uppercase leading-none">{istMonthAbbr(d)}</p>
+                <p className="text-sm font-black text-white leading-tight">{istDay(d)}</p>
+              </div>
+            </>
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center">
+              <p className="text-[10px] font-black text-emerald-400 uppercase">{istMonthAbbr(d)}</p>
+              <p className="text-2xl font-black text-white leading-tight">{istDay(d)}</p>
+            </div>
+          )}
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <p className="text-white text-sm font-bold truncate group-hover:text-emerald-300 transition-colors">{w.title}</p>
+          <p className="text-slate-400 text-xs mt-0.5">
+            {w.instructor}
+            <span className="text-slate-600 mx-1.5">·</span>
+            {istTime(d)}
+            <span className="text-slate-600 mx-1.5">·</span>
+            <Clock size={10} className="inline mr-0.5" />{w.duration} min
+          </p>
+        </div>
+
+        {w.topic && (
+          <span className="hidden sm:block flex-shrink-0 text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-400/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
+            {w.topic}
+          </span>
+        )}
+
+        <button
+          onClick={(e) => { e.stopPropagation(); window.open(w.meetingUrl, '_blank', 'noopener,noreferrer'); }}
+          className="flex-shrink-0 flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors"
+        >
+          Join <ArrowRight size={12} />
+        </button>
+      </div>
+
+      {/* Detail modal */}
+      {showDetail && (
+        <div
+          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+          onClick={() => setShowDetail(false)}
+        >
+          <div
+            className="bg-[#0F1623] border border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Banner */}
+            <div className="relative h-52 bg-gradient-to-br from-emerald-700 to-teal-800">
+              {w.thumbnail ? (
+                <>
+                  <Image src={w.thumbnail} alt={w.title} fill sizes="672px" className="object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                </>
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center opacity-10">
+                  <Radio size={96} className="text-white" />
+                </div>
+              )}
+              {/* Close */}
+              <button
+                onClick={() => setShowDetail(false)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/50 border border-white/20 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
+              >
+                <X size={15} />
+              </button>
+              {/* Topic badge */}
+              {w.topic && (
+                <span className="absolute top-4 left-4 text-[10px] font-black uppercase tracking-widest bg-emerald-500 border border-emerald-400/40 text-white px-3 py-1 rounded-full">
+                  {w.topic}
+                </span>
+              )}
+              {/* Title + meta overlay */}
+              <div className="absolute bottom-0 left-0 right-0 p-5">
+                <h3 className="text-white font-black text-xl leading-snug drop-shadow-lg mb-1">{w.title}</h3>
+                <p className="text-white/60 text-sm">{w.instructor}</p>
+              </div>
+            </div>
+
+            {/* Body — two columns */}
+            <div className="p-6 grid grid-cols-1 sm:grid-cols-5 gap-6">
+
+              {/* Left col: meta */}
+              <div className="sm:col-span-2 space-y-3">
+                {/* Date */}
+                <div className="bg-white/5 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CalendarDays size={13} className="text-emerald-400" />
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Date & Time</span>
+                  </div>
+                  <p className="text-white text-base font-bold">{istDate(d)}</p>
+                  <p className="text-emerald-400 text-sm font-semibold mt-0.5">{istTime(d)} IST</p>
+                </div>
+                {/* Duration */}
+                <div className="bg-white/5 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Clock size={13} className="text-sky-400" />
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Duration</span>
+                  </div>
+                  <p className="text-white text-base font-bold">{w.duration} min</p>
+                  <p className="text-slate-500 text-xs mt-0.5">Live interactive session</p>
+                </div>
+                {/* Instructor */}
+                <div className="bg-white/5 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Users size={13} className="text-violet-400" />
+                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Instructor</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-black text-sm flex-shrink-0">
+                      {w.instructor.charAt(0).toUpperCase()}
+                    </div>
+                    <p className="text-white text-sm font-bold">{w.instructor}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right col: description + CTA */}
+              <div className="sm:col-span-3 flex flex-col gap-4">
+                {w.description && (
+                  <div className="flex-1">
+                    <p className="text-[10px] font-black uppercase tracking-wider text-slate-500 mb-2">About this Webinar</p>
+                    <p className="text-slate-300 text-sm leading-relaxed">{w.description}</p>
+                  </div>
+                )}
+                <div className="mt-auto space-y-3">
+                  <a
+                    href={w.meetingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3.5 rounded-xl transition-colors text-sm"
+                  >
+                    <ExternalLink size={16} />
+                    Join Free — No Login Required
+                  </a>
+                  <p className="text-center text-[11px] text-slate-600">Free & open to everyone · No registration needed</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
