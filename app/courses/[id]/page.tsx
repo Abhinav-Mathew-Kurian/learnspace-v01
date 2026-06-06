@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 300; // ISR: rebuild at most every 5 minutes
 
 import type { Metadata } from 'next';
 import { connectDB } from '@/lib/mongodb';
