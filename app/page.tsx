@@ -194,9 +194,9 @@ export default async function Home() {
                     <div className="grid grid-cols-2 gap-2.5">
                       {[
                         { t:'Full-Stack Dev', p:72, c:'bg-indigo-500' },
-                        { t:'Data Science', p:45, c:'bg-sky-500' },
+                        { t:'Digital Marketing', p:45, c:'bg-sky-500' },
                         { t:'UI/UX Design', p:91, c:'bg-violet-500' },
-                        { t:'Machine Learning', p:28, c:'bg-emerald-500' },
+                        { t:'PSC Coaching', p:28, c:'bg-emerald-500' },
                       ].map((c) => (
                         <div key={c.t} className="bg-[#151D2B] rounded-xl p-3">
                           <div className="w-7 h-7 rounded-lg bg-white/5 mb-2" />
