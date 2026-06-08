@@ -110,10 +110,10 @@ export default async function Home() {
               </div>
 
               <h1 className="text-5xl sm:text-6xl xl:text-[70px] font-black text-white leading-[1.02] tracking-tight mb-6">
-                Transform Your{' '}
+                Upgarde Your{' '}
                 <span className="relative">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400">
-                    Career
+                    Skills
                   </span>
                 </span>
                 <br />With Expert<br />Instruction.
