@@ -106,7 +106,7 @@ export default async function Home() {
             <div>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/25 mb-7">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-                <span className="text-xs font-semibold text-indigo-300 tracking-wide">India's Premium Upskill Platform</span>
+                <span className="text-xs font-semibold text-indigo-300 tracking-wide">India's Premium Up-Skill Platform</span>
               </div>
 
               <h1 className="text-5xl sm:text-6xl xl:text-[70px] font-black text-white leading-[1.02] tracking-tight mb-6">
