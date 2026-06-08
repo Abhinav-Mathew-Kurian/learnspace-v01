@@ -115,11 +115,12 @@ export default function Sidebar({ role, userName, collapsed = false, onToggle, u
       {/* Logo + toggle */}
       <div className="px-3 py-4 border-b border-slate-100 flex items-center justify-between gap-2">
         <div className={`flex items-center gap-2.5 min-w-0 ${collapsed ? 'justify-center w-full' : ''}`}>
-          <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-10 w-auto object-contain flex-shrink-0" />
+          <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-12 w-auto object-contain flex-shrink-0" />
           {!collapsed && (
             <div className="min-w-0">
               <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-5 w-auto object-contain" />
-              <span className={`inline-flex px-2 py-0.5 rounded-md text-[11px] font-semibold capitalize ${roleBadge[role]}`}>
+              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-slate-400 block pl-0.5 -mt-0.5">Academy</span>
+              <span className={`inline-flex mt-1 px-2 py-0.5 rounded-md text-[11px] font-semibold capitalize ${roleBadge[role]}`}>
                 {role}
               </span>
             </div>

@@ -29,8 +29,11 @@ export default function HomeNavbar() {
     }`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
-          <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-10 w-auto object-contain flex-shrink-0" />
-          <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-5 w-auto object-contain flex-shrink-0" />
+          <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-12 w-auto object-contain flex-shrink-0" />
+          <div className="flex flex-col leading-none gap-0.5">
+            <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-6 w-auto object-contain brightness-0 invert" />
+            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/60 pl-0.5">Academy</span>
+          </div>
         </Link>
 
         {/* Desktop */}

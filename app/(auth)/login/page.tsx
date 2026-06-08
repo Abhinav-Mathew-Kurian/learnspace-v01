@@ -77,8 +77,11 @@ function LoginForm() {
 
         {/* Logo */}
         <Link href="/" className="relative z-10 flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-          <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-12 w-auto object-contain" />
-          <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-6 w-auto object-contain brightness-0 invert" />
+          <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-14 w-auto object-contain" />
+          <div className="flex flex-col leading-none gap-0.5">
+            <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-7 w-auto object-contain brightness-0 invert" />
+            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 pl-0.5">Academy</span>
+          </div>
         </Link>
 
         {/* Headline */}
@@ -116,8 +119,11 @@ function LoginForm() {
 
           {/* Mobile logo */}
           <Link href="/" className="lg:hidden flex items-center gap-2 mb-10 hover:opacity-80 transition-opacity">
-            <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-10 w-auto object-contain" />
-            <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-5 w-auto object-contain" />
+            <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-12 w-auto object-contain" />
+            <div className="flex flex-col leading-none gap-0.5">
+              <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-6 w-auto object-contain" />
+              <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 pl-0.5">Academy</span>
+            </div>
           </Link>
 
           {/* Heading */}
