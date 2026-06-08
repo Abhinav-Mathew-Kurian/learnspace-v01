@@ -819,7 +819,7 @@ export default async function Home() {
             {/* Brand */}
             <div className="lg:col-span-2">
               <div className="flex items-center gap-2.5 mb-3">
-                <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={48} height={48} className="object-contain" />
+                <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={108} height={135} className="h-10 w-auto object-contain" />
                 <span className="font-black text-white text-lg tracking-tight">Howlfox Academy</span>
               </div>
               <p className="text-slate-500 text-sm leading-relaxed mb-4 max-w-xs">
