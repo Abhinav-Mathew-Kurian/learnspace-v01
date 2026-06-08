@@ -65,24 +65,25 @@ export default function WebinarCard({ w }: { w: Webinar }) {
 
         <button
           onClick={(e) => { e.stopPropagation(); window.open(w.meetingUrl, '_blank', 'noopener,noreferrer'); }}
-          className="flex-shrink-0 flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-colors"
+          className="flex-shrink-0 flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 sm:px-4 py-2.5 rounded-xl transition-colors"
         >
-          Join <ArrowRight size={12} />
+          <span className="hidden sm:inline">Join</span>
+          <ArrowRight size={14} />
         </button>
       </div>
 
       {/* Detail modal */}
       {showDetail && (
         <div
-          className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+          className="fixed inset-0 bg-black/70 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm"
           onClick={() => setShowDetail(false)}
         >
           <div
-            className="bg-[#0F1623] border border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden"
+            className="bg-[#0F1623] border border-white/10 rounded-t-2xl sm:rounded-2xl shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Banner */}
-            <div className="relative h-52 bg-gradient-to-br from-emerald-700 to-teal-800">
+            <div className="relative h-36 sm:h-52 bg-gradient-to-br from-emerald-700 to-teal-800 flex-shrink-0">
               {w.thumbnail ? (
                 <>
                   <Image src={w.thumbnail} alt={w.title} fill sizes="672px" className="object-cover" />
@@ -96,54 +97,55 @@ export default function WebinarCard({ w }: { w: Webinar }) {
               {/* Close */}
               <button
                 onClick={() => setShowDetail(false)}
-                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/50 border border-white/20 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
+                className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 border border-white/20 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
               >
                 <X size={15} />
               </button>
               {/* Topic badge */}
               {w.topic && (
-                <span className="absolute top-4 left-4 text-[10px] font-black uppercase tracking-widest bg-emerald-500 border border-emerald-400/40 text-white px-3 py-1 rounded-full">
+                <span className="absolute top-3 left-3 text-[10px] font-black uppercase tracking-widest bg-emerald-500 border border-emerald-400/40 text-white px-2.5 py-1 rounded-full">
                   {w.topic}
                 </span>
               )}
               {/* Title + meta overlay */}
-              <div className="absolute bottom-0 left-0 right-0 p-5">
-                <h3 className="text-white font-black text-xl leading-snug drop-shadow-lg mb-1">{w.title}</h3>
-                <p className="text-white/60 text-sm">{w.instructor}</p>
+              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                <h3 className="text-white font-black text-base sm:text-xl leading-snug drop-shadow-lg mb-0.5">{w.title}</h3>
+                <p className="text-white/60 text-xs sm:text-sm">{w.instructor}</p>
               </div>
             </div>
 
-            {/* Body — two columns */}
-            <div className="p-6 grid grid-cols-1 sm:grid-cols-5 gap-6">
+            {/* Body */}
+            <div className="p-4 sm:p-6 space-y-4 sm:space-y-0 sm:grid sm:grid-cols-5 sm:gap-6">
 
-              {/* Left col: meta */}
+              {/* Meta row on mobile / left col on desktop */}
               <div className="sm:col-span-2 space-y-3">
-                {/* Date */}
-                <div className="bg-white/5 rounded-xl p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <CalendarDays size={13} className="text-emerald-400" />
-                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Date & Time</span>
+                {/* Date + Duration side by side on mobile */}
+                <div className="grid grid-cols-2 gap-3 sm:block sm:space-y-3">
+                  <div className="bg-white/5 rounded-xl p-3 sm:p-4">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <CalendarDays size={12} className="text-emerald-400" />
+                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Date & Time</span>
+                    </div>
+                    <p className="text-white text-sm font-bold">{istDate(d)}</p>
+                    <p className="text-emerald-400 text-xs font-semibold mt-0.5">{istTime(d)} IST</p>
                   </div>
-                  <p className="text-white text-base font-bold">{istDate(d)}</p>
-                  <p className="text-emerald-400 text-sm font-semibold mt-0.5">{istTime(d)} IST</p>
-                </div>
-                {/* Duration */}
-                <div className="bg-white/5 rounded-xl p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Clock size={13} className="text-sky-400" />
-                    <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Duration</span>
+                  <div className="bg-white/5 rounded-xl p-3 sm:p-4">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Clock size={12} className="text-sky-400" />
+                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Duration</span>
+                    </div>
+                    <p className="text-white text-sm font-bold">{w.duration} min</p>
+                    <p className="text-slate-500 text-xs mt-0.5">Live session</p>
                   </div>
-                  <p className="text-white text-base font-bold">{w.duration} min</p>
-                  <p className="text-slate-500 text-xs mt-0.5">Live interactive session</p>
                 </div>
                 {/* Instructor */}
-                <div className="bg-white/5 rounded-xl p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Users size={13} className="text-violet-400" />
+                <div className="bg-white/5 rounded-xl p-3 sm:p-4">
+                  <div className="flex items-center gap-1.5 mb-1.5">
+                    <Users size={12} className="text-violet-400" />
                     <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">Instructor</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-black text-sm flex-shrink-0">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-black text-sm flex-shrink-0">
                       {w.instructor.charAt(0).toUpperCase()}
                     </div>
                     <p className="text-white text-sm font-bold">{w.instructor}</p>
@@ -154,12 +156,12 @@ export default function WebinarCard({ w }: { w: Webinar }) {
               {/* Right col: description + CTA */}
               <div className="sm:col-span-3 flex flex-col gap-4">
                 {w.description && (
-                  <div className="flex-1">
+                  <div>
                     <p className="text-[10px] font-black uppercase tracking-wider text-slate-500 mb-2">About this Webinar</p>
                     <p className="text-slate-300 text-sm leading-relaxed">{w.description}</p>
                   </div>
                 )}
-                <div className="mt-auto space-y-3">
+                <div className="mt-auto space-y-2.5">
                   <a
                     href={w.meetingUrl}
                     target="_blank"
