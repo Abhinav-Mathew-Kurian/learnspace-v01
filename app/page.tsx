@@ -169,7 +169,7 @@ export default async function Home() {
                   <span className="w-3 h-3 rounded-full bg-red-500/70" />
                   <span className="w-3 h-3 rounded-full bg-amber-500/70" />
                   <span className="w-3 h-3 rounded-full bg-emerald-500/70" />
-                  <span className="mx-auto text-xs text-slate-600 font-mono">learnspace.in/student/dashboard</span>
+                  <span className="mx-auto text-xs text-slate-600 font-mono">howlfoxacademy.com/student/dashboard</span>
                 </div>
                 {/* Content */}
                 <div className="flex">
@@ -179,7 +179,7 @@ export default async function Home() {
                       <div className="w-6 h-6 rounded-md bg-indigo-600 flex items-center justify-center">
                         <BookOpen size={11} className="text-white" />
                       </div>
-                      <span className="text-xs font-bold text-white">LearnSpace</span>
+                      <span className="text-xs font-bold text-white">Howlfox Academy</span>
                     </div>
                     {['Dashboard','My Courses','Live Classes','Calendar','Profile'].map((item, i) => (
                       <div key={item} className={`px-2.5 py-2 rounded-lg text-xs mb-0.5 font-medium ${i === 1 ? 'bg-indigo-600/80 text-white' : 'text-slate-500 hover:text-slate-400'}`}>
@@ -369,7 +369,7 @@ export default async function Home() {
           <div className="max-w-2xl mb-14">
             <div className="flex items-center gap-3 mb-3">
               <div className="h-0.5 w-6 bg-indigo-500 rounded-full" />
-              <p className="text-xs font-black uppercase tracking-widest text-indigo-600">Why LearnSpace</p>
+              <p className="text-xs font-black uppercase tracking-widest text-indigo-600">Why Howlfox Academy</p>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-tight mb-4">
               Everything you need to{' '}
@@ -706,7 +706,7 @@ export default async function Home() {
                 <div className="h-0.5 w-6 bg-amber-500 rounded-full" />
               </div>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 mb-3">Words from our students</h2>
-              <p className="text-slate-500 max-w-lg mx-auto">Honest reviews from students who&apos;ve transformed their skills on LearnSpace.</p>
+              <p className="text-slate-500 max-w-lg mx-auto">Honest reviews from students who&apos;ve transformed their skills on Howlfox Academy.</p>
             </div>
           </div>
 
@@ -784,7 +784,7 @@ export default async function Home() {
 
               <div className="space-y-4">
                 {[
-                  { Icon: Mail, label:'Email Us', value:'learnspace@hr.com', highlight:true },
+                  { Icon: Mail, label:'Email Us', value:'hello@howlfoxacademy.com', highlight:true },
                   { Icon: Phone, label:'Call Us', value:'+91 XXXXX XXXXX', highlight:false },
                   { Icon: MapPin, label:'Location', value:'India', highlight:false },
                 ].map(({ Icon, label, value, highlight }) => (
@@ -819,10 +819,8 @@ export default async function Home() {
             {/* Brand */}
             <div className="lg:col-span-2">
               <div className="flex items-center gap-2.5 mb-3">
-                <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                  <BookOpen size={15} className="text-white" strokeWidth={2.5} />
-                </div>
-                <span className="font-black text-white text-lg tracking-tight">LearnSpace</span>
+                <Image src="/images/logo/logo.jpeg" alt="Howlfox Academy" width={32} height={32} className="rounded-lg object-contain" />
+                <span className="font-black text-white text-lg tracking-tight">Howlfox Academy</span>
               </div>
               <p className="text-slate-500 text-sm leading-relaxed mb-4 max-w-xs">
                 India's premium private learning platform. Expert-led courses, live classes, and AI-powered study tools.
@@ -874,7 +872,7 @@ export default async function Home() {
         {/* Bottom bar */}
         <div className="border-t border-white/5 px-4 sm:px-6 py-4">
           <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-            <p className="text-xs text-slate-700">© 2025 LearnSpace. All rights reserved.</p>
+            <p className="text-xs text-slate-700">© 2025 Howlfox Academy. All rights reserved.</p>
             <p className="text-xs text-slate-700">Transforming education through technology 🚀</p>
           </div>
         </div>

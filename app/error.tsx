@@ -11,7 +11,7 @@ interface Props {
 export default function GlobalError({ error, reset }: Props) {
   useEffect(() => {
     // Log to console (replace with Sentry/Datadog in production)
-    console.error('[LearnSpace Error]', error);
+    console.error('[Howlfox Academy Error]', error);
   }, [error]);
 
   return (

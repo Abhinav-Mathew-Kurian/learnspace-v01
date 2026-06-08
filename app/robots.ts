@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin/', '/student/', '/teacher/', '/api/'],
       },
     ],
-    sitemap: 'https://learnspace.in/sitemap.xml',
+    sitemap: 'https://howlfoxacademy.com/sitemap.xml',
   };
 }

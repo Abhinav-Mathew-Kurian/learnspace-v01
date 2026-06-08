@@ -4,13 +4,13 @@ import { Suspense, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import { BookOpen, AlertCircle, Eye, EyeOff, ArrowRight, ShieldAlert, Clock, UserX } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff, ArrowRight, ShieldAlert, Clock, UserX } from 'lucide-react';
 import Link from 'next/link';
 
 const DEMO_ACCOUNTS = [
-  { role: 'Admin',   email: 'admin@learnspace.com',   password: 'admin123',   gradient: 'from-violet-500 to-indigo-600' },
-  { role: 'Teacher', email: 'teacher@learnspace.com', password: 'teacher123', gradient: 'from-sky-500 to-blue-600'      },
-  { role: 'Student', email: 'student@learnspace.com', password: 'student123', gradient: 'from-emerald-500 to-teal-600' },
+  { role: 'Admin',   email: 'admin@howlfoxacademy.com',   password: 'admin123',   gradient: 'from-violet-500 to-indigo-600' },
+  { role: 'Teacher', email: 'teacher@howlfoxacademy.com', password: 'teacher123', gradient: 'from-sky-500 to-blue-600'      },
+  { role: 'Student', email: 'student@howlfoxacademy.com', password: 'student123', gradient: 'from-emerald-500 to-teal-600' },
 ];
 
 interface LoginError {
@@ -77,10 +77,8 @@ function LoginForm() {
 
         {/* Logo */}
         <Link href="/" className="relative z-10 flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center">
-            <BookOpen size={18} className="text-white" strokeWidth={2.5} />
-          </div>
-          <span className="text-xl font-black text-white tracking-tight">LearnSpace</span>
+          <Image src="/images/logo/logo.jpeg" alt="Howlfox Academy" width={36} height={36} className="rounded-xl object-contain" />
+          <span className="text-xl font-black text-white tracking-tight">Howlfox Academy</span>
         </Link>
 
         {/* Headline */}
@@ -118,10 +116,8 @@ function LoginForm() {
 
           {/* Mobile logo */}
           <Link href="/" className="lg:hidden flex items-center gap-2 mb-10 hover:opacity-80 transition-opacity">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <BookOpen size={15} className="text-white" strokeWidth={2.5} />
-            </div>
-            <span className="text-lg font-black text-slate-900">LearnSpace</span>
+            <Image src="/images/logo/logo.jpeg" alt="Howlfox Academy" width={32} height={32} className="rounded-lg object-contain" />
+            <span className="text-lg font-black text-slate-900">Howlfox Academy</span>
           </Link>
 
           {/* Heading */}

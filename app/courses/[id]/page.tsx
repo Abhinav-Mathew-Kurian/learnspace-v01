@@ -35,9 +35,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   await connectDB();
   const { id } = await params;
   const course = await Course.findById(id).populate('teacher', 'name').lean();
-  if (!course || !course.isPublished) return { title: 'Course Not Found | LearnSpace' };
+  if (!course || !course.isPublished) return { title: 'Course Not Found | Howlfox Academy' };
   return {
-    title: `${course.title as string} | LearnSpace`,
+    title: `${course.title as string} | Howlfox Academy`,
     description: (course.description as string).slice(0, 160),
     openGraph: {
       title: course.title as string,

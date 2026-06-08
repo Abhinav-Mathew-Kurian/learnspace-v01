@@ -11,10 +11,10 @@ import PriceTag from '@/components/home/PriceTag';
 import BuyButton from '@/components/home/BuyButton';
 
 export const metadata: Metadata = {
-  title: 'All Courses | LearnSpace',
-  description: 'Browse all expert-led courses on LearnSpace. Web development, data science, AI/ML, design, and more.',
+  title: 'All Courses | Howlfox Academy',
+  description: 'Browse all expert-led courses on Howlfox Academy. Web development, data science, AI/ML, design, and more.',
   openGraph: {
-    title: 'All Courses | LearnSpace',
+    title: 'All Courses | Howlfox Academy',
     description: 'Expert-led online courses for every skill level.',
   },
 };

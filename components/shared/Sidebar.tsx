@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { signOut } from 'next-auth/react';
@@ -114,13 +115,11 @@ export default function Sidebar({ role, userName, collapsed = false, onToggle, u
       {/* Logo + toggle */}
       <div className="px-3 py-4 border-b border-slate-100 flex items-center justify-between gap-2">
         <div className={`flex items-center gap-2.5 min-w-0 ${collapsed ? 'justify-center w-full' : ''}`}>
-          <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center flex-shrink-0">
-            <BookOpen size={16} className="text-white" strokeWidth={2.5} />
-          </div>
+          <Image src="/images/logo/logo.jpeg" alt="Howlfox Academy" width={32} height={32} className="rounded-lg object-contain flex-shrink-0" />
           {!collapsed && (
             <div className="min-w-0">
               <span className="text-base font-bold text-slate-900 tracking-tight block truncate">
-                LearnSpace
+                Howlfox Academy
               </span>
               <span className={`inline-flex px-2 py-0.5 rounded-md text-[11px] font-semibold capitalize ${roleBadge[role]}`}>
                 {role}

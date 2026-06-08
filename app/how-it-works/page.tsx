@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BookOpen, ArrowLeft, UserCheck, LogIn, BookMarked, Video, Radio, Brain, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowLeft, UserCheck, LogIn, BookMarked, Video, Radio, Brain, ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'How It Works',
-  description: 'Discover how LearnSpace works — from getting access to completing courses, attending live classes, and tracking your progress.',
+  description: 'Discover how Howlfox Academy works — from getting access to completing courses, attending live classes, and tracking your progress.',
 };
 
 export default function HowItWorksPage() {
@@ -14,10 +15,8 @@ export default function HowItWorksPage() {
       <nav className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <BookOpen size={16} className="text-white" />
-            </div>
-            <span className="font-bold text-slate-900 text-lg">LearnSpace</span>
+            <Image src="/images/logo/logo.jpeg" alt="Howlfox Academy" width={32} height={32} className="rounded-lg object-contain" />
+            <span className="font-bold text-slate-900 text-lg">Howlfox Academy</span>
           </Link>
           <Link href="/login" className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors font-medium">
             Sign In
@@ -34,7 +33,7 @@ export default function HowItWorksPage() {
 
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-6">How it works</h1>
           <p className="text-xl text-slate-500 leading-relaxed mb-16">
-            LearnSpace is invite-only. Here&apos;s the full journey from enrollment to completion.
+            Howlfox Academy is invite-only. Here&apos;s the full journey from enrollment to completion.
           </p>
 
           {/* Student flow */}
@@ -127,13 +126,13 @@ const STUDENT_STEPS = [
 const TEACHER_STEPS = [
   { title: 'Receive your account', desc: 'The admin creates your teacher account. You get access to your own dashboard with your courses and students.', icon: UserCheck, bg: 'bg-sky-100', iconColor: 'text-sky-600' },
   { title: 'Create a course', desc: 'Add a title, description, category, and banner image. Set a preview video for students to see before enrolling. Publish when ready.', icon: BookMarked, bg: 'bg-indigo-100', iconColor: 'text-indigo-600' },
-  { title: 'Add video lessons', desc: 'Paste any YouTube URL (unlisted or public). LearnSpace extracts the video ID and embeds it securely. Set the order, add descriptions.', icon: Video, bg: 'bg-violet-100', iconColor: 'text-violet-600' },
+  { title: 'Add video lessons', desc: 'Paste any YouTube URL (unlisted or public). Howlfox Academy extracts the video ID and embeds it securely. Set the order, add descriptions.', icon: Video, bg: 'bg-violet-100', iconColor: 'text-violet-600' },
   { title: 'Schedule live sessions', desc: 'Create a live session with a Google Meet link and optional password. Students in the assigned batch see it on their calendar. The link is never publicly exposed.', icon: Radio, bg: 'bg-green-100', iconColor: 'text-green-600' },
   { title: 'Mark attendance', desc: 'After a live session, open the attendance panel, select students, and mark them present, late, or absent. It\'s saved to their permanent record.', icon: UserCheck, bg: 'bg-amber-100', iconColor: 'text-amber-600' },
 ] as const;
 
 const FAQ = [
-  { q: 'Can I register myself?', a: 'No. LearnSpace is invite-only. Your admin creates your account and sends you your credentials. This keeps the platform private and the learning community focused.' },
+  { q: 'Can I register myself?', a: 'No. Howlfox Academy is invite-only. Your admin creates your account and sends you your credentials. This keeps the platform private and the learning community focused.' },
   { q: 'What happens when my subscription expires?', a: 'You won\'t be able to log in until your admin renews your subscription. You\'ll see a clear message at the login screen with your expiry date.' },
   { q: 'Can I see courses I\'m not enrolled in?', a: 'You\'ll see a preview (course overview and possibly the first video) for courses you\'re not enrolled in. Full access requires enrollment by your admin.' },
   { q: 'Is my video progress saved automatically?', a: 'Yes. Progress is saved every 10 seconds while you\'re watching, and when you pause or close the video. You can always resume from exactly where you left off.' },

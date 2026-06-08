@@ -6,9 +6,9 @@ import { X, Tag, Send, CheckCircle, Percent, ArrowRight, Loader2, Mail, Phone } 
 const ADMIN_CONTACTS = [
   {
     label: 'Email',
-    value: 'hello@learnspace.in',
+    value: 'hello@howlfoxacademy.com',
     sub: 'Drop us a mail',
-    href: 'mailto:hello@learnspace.in',
+    href: 'mailto:hello@howlfoxacademy.com',
     bg: 'bg-indigo-50',
     border: 'border-indigo-200',
     iconBg: 'bg-indigo-100',
@@ -28,9 +28,9 @@ const ADMIN_CONTACTS = [
   },
   {
     label: 'Instagram',
-    value: '@learnspace.in',
+    value: '@howlfoxacademy',
     sub: 'DM us anytime',
-    href: 'https://instagram.com/learnspace.in',
+    href: 'https://instagram.com/howlfoxacademy',
     bg: 'bg-pink-50',
     border: 'border-pink-200',
     iconBg: 'bg-gradient-to-br from-pink-400 to-violet-500',

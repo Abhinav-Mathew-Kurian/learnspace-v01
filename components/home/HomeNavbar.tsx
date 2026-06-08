@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { BookOpen, Menu, X } from 'lucide-react';
+import Image from 'next/image';
+import { Menu, X } from 'lucide-react';
 
 export default function HomeNavbar() {
   const [open, setOpen] = useState(false);
@@ -28,10 +29,8 @@ export default function HomeNavbar() {
     }`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0">
-            <BookOpen size={14} className="text-white" strokeWidth={2.5} />
-          </div>
-          <span className="font-bold text-white text-base tracking-tight">LearnSpace</span>
+          <Image src="/images/logo/logo.jpeg" alt="Howlfox Academy" width={28} height={28} className="rounded-lg object-contain flex-shrink-0" />
+          <span className="font-bold text-white text-base tracking-tight">Howlfox Academy</span>
         </Link>
 
         {/* Desktop */}

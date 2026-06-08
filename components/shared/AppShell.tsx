@@ -6,7 +6,8 @@ import { signOut } from 'next-auth/react';
 import Sidebar from './Sidebar';
 import PageTransition from './PageTransition';
 import { UserRole } from '@/types';
-import { Menu, BookOpen, UserCircle, LogOut } from 'lucide-react';
+import Image from 'next/image';
+import { Menu, UserCircle, LogOut } from 'lucide-react';
 
 interface Props {
   role: UserRole;
@@ -101,10 +102,8 @@ export default function AppShell({ role, userName, children, upcomingEventCount 
           </button>
 
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center flex-shrink-0">
-              <BookOpen size={13} className="text-white" strokeWidth={2.5} />
-            </div>
-            <span className="text-base font-bold text-slate-900 tracking-tight">LearnSpace</span>
+            <Image src="/images/logo/logo.jpeg" alt="Howlfox Academy" width={28} height={28} className="rounded-lg object-contain flex-shrink-0" />
+            <span className="text-base font-bold text-slate-900 tracking-tight">Howlfox Academy</span>
           </div>
 
           {/* User avatar + dropdown — profile & logout */}

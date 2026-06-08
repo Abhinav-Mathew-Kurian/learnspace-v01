@@ -117,7 +117,7 @@ export default function RatingForm() {
           onChange={(e) => setComment(e.target.value)}
           rows={3}
           className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm resize-none"
-          placeholder="Share your experience with LearnSpace (min 10 characters)..."
+          placeholder="Share your experience with Howlfox Academy (min 10 characters)..."
         />
       </div>
 

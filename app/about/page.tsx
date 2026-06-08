@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { BookOpen, ArrowLeft, Target, Heart, Zap, Lock } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowLeft, Target, Heart, Zap, Lock } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About Us',
-  description: 'Learn about LearnSpace — our mission, values, and the team behind the platform.',
+  description: 'Learn about Howlfox Academy — our mission, values, and the team behind the platform.',
 };
 
 export default function AboutPage() {
@@ -14,10 +15,8 @@ export default function AboutPage() {
       <nav className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <BookOpen size={16} className="text-white" />
-            </div>
-            <span className="font-bold text-slate-900 text-lg">LearnSpace</span>
+            <Image src="/images/logo/logo.jpeg" alt="Howlfox Academy" width={32} height={32} className="rounded-lg object-contain" />
+            <span className="font-bold text-slate-900 text-lg">Howlfox Academy</span>
           </Link>
           <Link href="/login" className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors font-medium">
             Sign In
@@ -32,9 +31,9 @@ export default function AboutPage() {
             Back to home
           </Link>
 
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-6">About LearnSpace</h1>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-6">About Howlfox Academy</h1>
           <p className="text-xl text-slate-500 leading-relaxed mb-12">
-            LearnSpace is a private online course platform built for small, focused learning communities — think coaching institutes, boot camps, and private tutoring setups.
+            Howlfox Academy is a private online course platform built for small, focused learning communities — think coaching institutes, boot camps, and private tutoring setups.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-16">
@@ -53,7 +52,7 @@ export default function AboutPage() {
               Most online learning platforms are built for massive scale — thousands of courses, millions of students, and a marketplace mindset. That&apos;s great for discovery, but terrible for the focused, personal learning experience that small institutions provide.
             </p>
             <p className="text-slate-600 leading-relaxed mb-6">
-              LearnSpace is different. It&apos;s invite-only by design. There&apos;s no self-registration, no marketplace, no algorithm recommending random courses. Your admin creates your account, assigns you to the right courses, and you get exactly what you need — nothing more, nothing less.
+              Howlfox Academy is different. It&apos;s invite-only by design. There&apos;s no self-registration, no marketplace, no algorithm recommending random courses. Your admin creates your account, assigns you to the right courses, and you get exactly what you need — nothing more, nothing less.
             </p>
             <p className="text-slate-600 leading-relaxed mb-10">
               It&apos;s built for institutions that know their students by name.
@@ -61,7 +60,7 @@ export default function AboutPage() {
 
             <h2 className="text-2xl font-bold text-slate-900 mb-4">The stack</h2>
             <p className="text-slate-600 leading-relaxed mb-4">
-              LearnSpace is built with modern, production-grade technology — Next.js 14 with the App Router, MongoDB Atlas, NextAuth v5 for authentication, Cloudinary for media, and OpenRouter for the AI assistant.
+              Howlfox Academy is built with modern, production-grade technology — Next.js 14 with the App Router, MongoDB Atlas, NextAuth v5 for authentication, Cloudinary for media, and OpenRouter for the AI assistant.
             </p>
             <p className="text-slate-600 leading-relaxed">
               Video hosting uses YouTube unlisted embeds — keeping storage costs zero while delivering smooth playback with full progress tracking via the YouTube IFrame API.
@@ -71,7 +70,7 @@ export default function AboutPage() {
           <div className="mt-16 pt-10 border-t border-slate-100 text-center">
             <p className="text-slate-500 mb-4">Ready to get started? Your admin has your credentials.</p>
             <Link href="/login" className="inline-flex items-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-colors text-sm">
-              Sign in to LearnSpace
+              Sign in to Howlfox Academy
             </Link>
           </div>
         </div>

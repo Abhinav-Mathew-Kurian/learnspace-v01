@@ -20,7 +20,7 @@ export default function NotFound() {
             className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-colors"
           >
             <BookOpen size={15} />
-            Go to LearnSpace
+            Go to Howlfox Academy
           </Link>
           <Link
             href="javascript:history.back()"
