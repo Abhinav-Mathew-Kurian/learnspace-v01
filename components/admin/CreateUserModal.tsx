@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
 interface Props {
   onClose: () => void;
@@ -22,6 +23,7 @@ export default function CreateUserModal({ onClose, onCreated }: Props) {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPw, setShowPw] = useState(false);
 
   const set = (k: keyof typeof form, v: string | boolean) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -99,13 +101,22 @@ export default function CreateUserModal({ onClose, onCreated }: Props) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">Password *</label>
-              <input
-                required
-                type="password"
-                value={form.password}
-                onChange={(e) => set('password', e.target.value)}
-                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
+              <div className="relative">
+                <input
+                  required
+                  type={showPw ? 'text' : 'password'}
+                  value={form.password}
+                  onChange={(e) => set('password', e.target.value)}
+                  className="w-full px-3 py-2 pr-9 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPw(p => !p)}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  {showPw ? <EyeOff size={15} /> : <Eye size={15} />}
+                </button>
+              </div>
             </div>
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">Phone</label>
