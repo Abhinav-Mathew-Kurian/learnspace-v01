@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   verification: {
-    google: '',  // paste your Google Search Console verification code here
+    google: 'NcXbRcPMPeZLKLEdDHxm6G_VoCXZEcKxm-nYJKPTyRc',
   },
   category: 'education',
 };
