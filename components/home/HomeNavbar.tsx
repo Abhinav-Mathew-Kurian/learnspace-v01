@@ -29,7 +29,7 @@ export default function HomeNavbar() {
     }`}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
-          <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={28} height={28} className="rounded-lg object-contain flex-shrink-0" />
+          <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={48} height={48} className="object-contain flex-shrink-0" />
           <span className="font-bold text-white text-base tracking-tight">Howlfox Academy</span>
         </Link>
 
