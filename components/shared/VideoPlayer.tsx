@@ -63,6 +63,20 @@ export default function VideoPlayer({
   const [availableQualities, setAvailableQualities] = useState<string[]>([]);
   const [currentQuality, setCurrentQuality] = useState('auto');
   const [showQualityMenu, setShowQualityMenu] = useState(false);
+  const qualitiesLoadedRef = useRef(false);
+
+  // Fetch quality levels — only available after buffering starts, not at onReady time
+  const tryLoadQualities = useCallback(() => {
+    if (qualitiesLoadedRef.current) return;
+    const qualities = playerRef.current?.getAvailableQualityLevels() ?? [];
+    // YouTube returns ['auto'] or [] before buffering; wait until real levels appear
+    if (qualities.length > 1 || (qualities.length === 1 && qualities[0] !== 'auto')) {
+      setAvailableQualities(qualities);
+      qualitiesLoadedRef.current = true;
+    }
+    const q = playerRef.current?.getPlaybackQuality();
+    if (q) setCurrentQuality(q);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── IFrame API callbacks ───────────────────────────────────────────
   const handleReady = useCallback((d: number) => {
@@ -75,20 +89,32 @@ export default function VideoPlayer({
     }
     const vol = playerRef.current?.getVolume();
     if (typeof vol === 'number') setVolume(vol);
-    const qualities = playerRef.current?.getAvailableQualityLevels() ?? [];
-    if (qualities.length > 0) setAvailableQualities(qualities);
-    const q = playerRef.current?.getPlaybackQuality();
-    if (q) setCurrentQuality(q);
+    tryLoadQualities();
     setIsReady(true);
-  }, [courseId, videoDbId, propTotal]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [courseId, videoDbId, propTotal, tryLoadQualities]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleStateChange = useCallback((state: number) => {
     setIsPlaying(state === 1);
-  }, []);
+    // Quality levels become available once the video starts buffering/playing
+    if (state === 1 || state === 3) tryLoadQualities();
+  }, [tryLoadQualities]);
+
+  const handleQualityChange = useCallback((q: string) => {
+    setCurrentQuality(q);
+    // Re-fetch the full list in case it changed (e.g. adaptive switch revealed more levels)
+    if (!qualitiesLoadedRef.current) {
+      const qualities = playerRef.current?.getAvailableQualityLevels() ?? [];
+      if (qualities.length > 1) {
+        setAvailableQualities(qualities);
+        qualitiesLoadedRef.current = true;
+      }
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { playerRef, apiError } = useYouTubePlayer({
     containerId: iframeId, videoId, initialPosition,
     onReady: handleReady, onStateChange: handleStateChange,
+    onQualityChange: handleQualityChange,
   });
 
   // ── Smooth UI tick (250 ms) ────────────────────────────────────────

@@ -30,6 +30,7 @@ interface YTPlayerOptions {
   events?: {
     onReady?: (e: { target: YTPlayer }) => void;
     onStateChange?: (e: { data: number }) => void;
+    onPlaybackQualityChange?: (e: { data: string }) => void;
   };
 }
 
@@ -87,6 +88,7 @@ interface UseYouTubePlayerOptions {
   onReady?: (duration: number) => void;
   onStateChange?: (state: number, currentTime: number) => void;
   onTimeUpdate?: (currentTime: number, duration: number) => void;
+  onQualityChange?: (quality: string) => void;
 }
 
 export function useYouTubePlayer({
@@ -96,17 +98,20 @@ export function useYouTubePlayer({
   onReady,
   onStateChange,
   onTimeUpdate,
+  onQualityChange,
 }: UseYouTubePlayerOptions) {
   const playerRef = useRef<YTPlayer | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const onReadyCb = useRef(onReady);
   const onStateCb = useRef(onStateChange);
   const onTimeCb = useRef(onTimeUpdate);
+  const onQualityCb = useRef(onQualityChange);
   const [apiError, setApiError] = useState<string | null>(null);
 
   useEffect(() => { onReadyCb.current = onReady; }, [onReady]);
   useEffect(() => { onStateCb.current = onStateChange; }, [onStateChange]);
   useEffect(() => { onTimeCb.current = onTimeUpdate; }, [onTimeUpdate]);
+  useEffect(() => { onQualityCb.current = onQualityChange; }, [onQualityChange]);
 
   const stopInterval = useCallback(() => {
     if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; }
@@ -154,6 +159,10 @@ export function useYouTubePlayer({
             }
 
             onStateCb.current?.(state, player.getCurrentTime());
+          },
+          onPlaybackQualityChange(e) {
+            if (destroyed) return;
+            onQualityCb.current?.(e.data);
           },
         },
       });
