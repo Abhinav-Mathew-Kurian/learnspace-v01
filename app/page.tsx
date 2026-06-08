@@ -784,8 +784,8 @@ export default async function Home() {
 
               <div className="space-y-4">
                 {[
-                  { Icon: Mail, label:'Email Us', value:'hello@howlfoxacademy.com', highlight:true },
-                  { Icon: Phone, label:'Call Us', value:'+91 XXXXX XXXXX', highlight:false },
+                  { Icon: Mail, label:'Email Us', value:'howlfoxceo@gmail.com', highlight:true },
+                  { Icon: Phone, label:'Call Us', value:'+91 62387 50649', highlight:false },
                   { Icon: MapPin, label:'Location', value:'India', highlight:false },
                 ].map(({ Icon, label, value, highlight }) => (
                   <div key={label} className="flex items-center gap-3.5">
@@ -819,7 +819,7 @@ export default async function Home() {
             {/* Brand */}
             <div className="lg:col-span-2">
               <div className="flex items-center gap-2.5 mb-3">
-                <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={108} height={135} className="h-10 w-auto object-contain" />
+                <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={108} height={135} className="h-14 w-auto object-contain" />
                 <span className="font-black text-white text-lg tracking-tight">Howlfox Academy</span>
               </div>
               <p className="text-slate-500 text-sm leading-relaxed mb-4 max-w-xs">

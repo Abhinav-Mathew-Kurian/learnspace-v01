@@ -6,9 +6,9 @@ import { X, Tag, Send, CheckCircle, Percent, ArrowRight, Loader2, Mail, Phone } 
 const ADMIN_CONTACTS = [
   {
     label: 'Email',
-    value: 'hello@howlfoxacademy.com',
+    value: 'howlfoxceo@gmail.com',
     sub: 'Drop us a mail',
-    href: 'mailto:hello@howlfoxacademy.com',
+    href: 'mailto:howlfoxceo@gmail.com',
     bg: 'bg-indigo-50',
     border: 'border-indigo-200',
     iconBg: 'bg-indigo-100',
@@ -17,9 +17,9 @@ const ADMIN_CONTACTS = [
   },
   {
     label: 'Call / WhatsApp',
-    value: '+91 98765 43210',
+    value: '+91 62387 50649',
     sub: 'Mon–Sat, 9am–7pm IST',
-    href: 'https://wa.me/919876543210',
+    href: 'https://wa.me/916238750649',
     bg: 'bg-emerald-50',
     border: 'border-emerald-200',
     iconBg: 'bg-emerald-100',

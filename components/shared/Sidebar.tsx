@@ -115,7 +115,7 @@ export default function Sidebar({ role, userName, collapsed = false, onToggle, u
       {/* Logo + toggle */}
       <div className="px-3 py-4 border-b border-slate-100 flex items-center justify-between gap-2">
         <div className={`flex items-center gap-2.5 min-w-0 ${collapsed ? 'justify-center w-full' : ''}`}>
-          <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={108} height={135} className="h-10 w-auto object-contain flex-shrink-0" />
+          <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={108} height={135} className="h-14 w-auto object-contain flex-shrink-0" />
           {!collapsed && (
             <div className="min-w-0">
               <span className="text-base font-bold text-slate-900 tracking-tight block truncate">
