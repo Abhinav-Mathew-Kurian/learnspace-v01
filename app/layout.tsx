@@ -77,8 +77,8 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: '/images/logo/HOWLFOOX-LOGO4.svg',
+    apple: '/images/logo/HOWLFOOX-LOGO4.svg',
   },
   verification: {
     google: 'NcXbRcPMPeZLKLEdDHxm6G_VoCXZEcKxm-nYJKPTyRc',
