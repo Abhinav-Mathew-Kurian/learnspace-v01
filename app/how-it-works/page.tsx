@@ -15,8 +15,8 @@ export default function HowItWorksPage() {
       <nav className="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={108} height={135} className="h-14 w-auto object-contain" />
-            <span className="font-bold text-slate-900 text-lg">Howlfox Academy</span>
+            <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-9 w-auto object-contain" />
+            <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-5 w-auto object-contain" />
           </Link>
           <Link href="/login" className="text-sm bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors font-medium">
             Sign In

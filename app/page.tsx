@@ -819,8 +819,8 @@ export default async function Home() {
             {/* Brand */}
             <div className="lg:col-span-2">
               <div className="flex items-center gap-2.5 mb-3">
-                <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={108} height={135} className="h-14 w-auto object-contain" />
-                <span className="font-black text-white text-lg tracking-tight">Howlfox Academy</span>
+                <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-10 w-auto object-contain" />
+                <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-5 w-auto object-contain brightness-0 invert" />
               </div>
               <p className="text-slate-500 text-sm leading-relaxed mb-4 max-w-xs">
                 India's premium private learning platform. Expert-led courses, live classes, and AI-powered study tools.

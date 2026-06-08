@@ -77,8 +77,8 @@ function LoginForm() {
 
         {/* Logo */}
         <Link href="/" className="relative z-10 flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-          <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={108} height={135} className="h-16 w-auto object-contain" />
-          <span className="text-xl font-black text-white tracking-tight">Howlfox Academy</span>
+          <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-12 w-auto object-contain" />
+          <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-6 w-auto object-contain brightness-0 invert" />
         </Link>
 
         {/* Headline */}
@@ -116,8 +116,8 @@ function LoginForm() {
 
           {/* Mobile logo */}
           <Link href="/" className="lg:hidden flex items-center gap-2 mb-10 hover:opacity-80 transition-opacity">
-            <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={108} height={135} className="h-14 w-auto object-contain" />
-            <span className="text-lg font-black text-slate-900">Howlfox Academy</span>
+            <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-10 w-auto object-contain" />
+            <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-5 w-auto object-contain" />
           </Link>
 
           {/* Heading */}

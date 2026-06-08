@@ -102,8 +102,8 @@ export default function AppShell({ role, userName, children, upcomingEventCount 
           </button>
 
           <div className="flex items-center gap-2">
-            <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={108} height={135} className="h-14 w-auto object-contain flex-shrink-0" />
-            <span className="text-base font-bold text-slate-900 tracking-tight">Howlfox Academy</span>
+            <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-9 w-auto object-contain flex-shrink-0" />
+            <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-5 w-auto object-contain flex-shrink-0" />
           </div>
 
           {/* User avatar + dropdown — profile & logout */}
