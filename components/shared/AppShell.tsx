@@ -102,7 +102,7 @@ export default function AppShell({ role, userName, children, upcomingEventCount 
           </button>
 
           <div className="flex items-center gap-2">
-            <Image src="/images/logo/logo.jpeg" alt="Howlfox Academy" width={28} height={28} className="rounded-lg object-contain flex-shrink-0" />
+            <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={28} height={28} className="rounded-lg object-contain flex-shrink-0" />
             <span className="text-base font-bold text-slate-900 tracking-tight">Howlfox Academy</span>
           </div>
 

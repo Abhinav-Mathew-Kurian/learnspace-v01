@@ -77,7 +77,7 @@ function LoginForm() {
 
         {/* Logo */}
         <Link href="/" className="relative z-10 flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-          <Image src="/images/logo/logo.jpeg" alt="Howlfox Academy" width={36} height={36} className="rounded-xl object-contain" />
+          <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={36} height={36} className="rounded-xl object-contain" />
           <span className="text-xl font-black text-white tracking-tight">Howlfox Academy</span>
         </Link>
 
@@ -116,7 +116,7 @@ function LoginForm() {
 
           {/* Mobile logo */}
           <Link href="/" className="lg:hidden flex items-center gap-2 mb-10 hover:opacity-80 transition-opacity">
-            <Image src="/images/logo/logo.jpeg" alt="Howlfox Academy" width={32} height={32} className="rounded-lg object-contain" />
+            <Image src="/images/logo/HOWLFOOX-LOGO2.svg" alt="Howlfox Academy" width={32} height={32} className="rounded-lg object-contain" />
             <span className="text-lg font-black text-slate-900">Howlfox Academy</span>
           </Link>
 
