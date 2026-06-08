@@ -22,44 +22,127 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://howlfoxacademy.com'),
   title: {
-    default: 'Howlfox Academy — Online Course Platform',
+    default: 'Howlfox Academy — Online Courses, Live Classes & Expert Training in India',
     template: '%s | Howlfox Academy',
   },
   description:
-    'Howlfox Academy is a private online learning platform offering expert-led courses, live classes, and structured learning paths. Learn at your own pace with video lessons, live sessions, and AI-powered assistance.',
-  keywords: ['online courses', 'e-learning', 'live classes', 'video learning', 'Howlfox Academy', 'online education'],
-  authors: [{ name: 'Howlfox Academy' }],
+    'Howlfox Academy offers expert-led online courses in Digital Marketing, Meta Ads, UI/UX Design, Graphic Design, Photography, Videography, and Business. Join live classes, get AI-powered assistance, and learn from industry experts. Enroll today.',
+  keywords: [
+    'Howlfox Academy',
+    'howlfox',
+    'online courses India',
+    'digital marketing course',
+    'meta ads course',
+    'UI UX design course',
+    'graphic design course',
+    'photography course India',
+    'videography course',
+    'business course India',
+    'live online classes',
+    'learn digital marketing',
+    'online learning platform India',
+    'expert led courses',
+    'howlfox academy courses',
+  ],
+  authors: [{ name: 'Howlfox Academy', url: 'https://howlfoxacademy.com' }],
   creator: 'Howlfox Academy',
   publisher: 'Howlfox Academy',
+  alternates: {
+    canonical: 'https://howlfoxacademy.com',
+  },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   openGraph: {
     type: 'website',
     locale: 'en_IN',
     url: 'https://howlfoxacademy.com',
     siteName: 'Howlfox Academy',
-    title: 'Howlfox Academy — Online Course Platform',
-    description: 'Expert-led online courses, live classes, and AI-powered learning. Learn anytime, anywhere.',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Howlfox Academy' }],
+    title: 'Howlfox Academy — Online Courses & Live Classes in India',
+    description: 'Expert-led courses in Digital Marketing, UI/UX, Graphic Design, Photography, and more. Join live classes and learn from industry experts.',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Howlfox Academy — Online Courses India' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Howlfox Academy — Online Course Platform',
-    description: 'Expert-led online courses, live classes, and AI-powered learning.',
+    title: 'Howlfox Academy — Online Courses & Live Classes in India',
+    description: 'Expert-led courses in Digital Marketing, UI/UX, Graphic Design, Photography, and more.',
     images: ['/og-image.png'],
   },
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-touch-icon.png',
   },
+  verification: {
+    google: '',  // paste your Google Search Console verification code here
+  },
+  category: 'education',
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://howlfoxacademy.com/#organization',
+      name: 'Howlfox Academy',
+      url: 'https://howlfoxacademy.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://howlfoxacademy.com/images/logo/HOWLFOOX-LOGO2.svg',
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: '+91-6238750649',
+        contactType: 'customer service',
+        email: 'howlfoxceo@gmail.com',
+        areaServed: 'IN',
+        availableLanguage: 'English',
+      },
+      sameAs: ['https://instagram.com/howlfoxacademy'],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://howlfoxacademy.com/#website',
+      url: 'https://howlfoxacademy.com',
+      name: 'Howlfox Academy',
+      description: 'Expert-led online courses in Digital Marketing, UI/UX Design, Graphic Design, Photography, Videography, and Business.',
+      publisher: { '@id': 'https://howlfoxacademy.com/#organization' },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: { '@type': 'EntryPoint', urlTemplate: 'https://howlfoxacademy.com/courses?q={search_term_string}' },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@type': 'EducationalOrganization',
+      '@id': 'https://howlfoxacademy.com/#educational-org',
+      name: 'Howlfox Academy',
+      url: 'https://howlfoxacademy.com',
+      description: 'Howlfox Academy offers expert-led online courses in Digital Marketing, Meta Ads, UI/UX Design, Graphic Design, Photography, Videography, and Business in India.',
+      address: { '@type': 'PostalAddress', addressCountry: 'IN' },
+      telephone: '+91-6238750649',
+      email: 'howlfoxceo@gmail.com',
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${jakarta.variable} h-full`} suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full font-sans antialiased" suppressHydrationWarning>
         <SessionProvider>{children}</SessionProvider>
         <Analytics />
