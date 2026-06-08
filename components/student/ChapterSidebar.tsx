@@ -2,14 +2,13 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { CheckCircle2, PlayCircle, Lock, ChevronDown, ChevronUp, List } from 'lucide-react';
+import { PlayCircle, Lock, ChevronDown, ChevronUp, List } from 'lucide-react';
 
 interface ChapterVideo {
   id: string;
   title: string;
   accessible: boolean;
   isCurrent: boolean;
-  isDone: boolean;
   index: number;
 }
 
@@ -36,9 +35,7 @@ function VideoListItem({ v, courseId }: { v: ChapterVideo; courseId: string }) {
       className={`flex items-start gap-3 px-4 py-3 hover:bg-slate-50 transition-colors ${v.isCurrent ? 'bg-indigo-50' : ''}`}
     >
       <div className="flex-shrink-0 mt-0.5">
-        {v.isDone ? (
-          <CheckCircle2 size={15} className="text-green-500" />
-        ) : v.isCurrent ? (
+        {v.isCurrent ? (
           <PlayCircle size={15} className="text-indigo-600" />
         ) : (
           <span className="w-[15px] h-[15px] flex items-center justify-center text-[10px] font-bold text-slate-400">
@@ -47,7 +44,7 @@ function VideoListItem({ v, courseId }: { v: ChapterVideo; courseId: string }) {
         )}
       </div>
       <span className={`text-[13px] leading-snug flex-1 ${
-        v.isCurrent ? 'font-semibold text-indigo-700' : v.isDone ? 'text-slate-500' : 'text-slate-700'
+        v.isCurrent ? 'font-semibold text-indigo-700' : 'text-slate-700'
       }`}>
         {v.title}
       </span>

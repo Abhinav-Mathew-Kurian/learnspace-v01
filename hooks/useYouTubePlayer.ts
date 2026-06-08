@@ -15,6 +15,12 @@ interface YTPlayer {
   isMuted(): boolean;
   getVolume(): number;
   setVolume(v: number): void;
+  setPlaybackRate(suggestedRate: number): void;
+  getPlaybackRate(): number;
+  getAvailablePlaybackRates(): number[];
+  setPlaybackQuality(suggestedQuality: string): void;
+  getPlaybackQuality(): string;
+  getAvailableQualityLevels(): string[];
   destroy(): void;
 }
 

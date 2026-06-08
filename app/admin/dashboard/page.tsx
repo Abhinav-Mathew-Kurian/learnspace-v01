@@ -3,7 +3,6 @@ import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
 import Course from '@/models/Course';
 import Enrollment from '@/models/Enrollment';
-import Progress from '@/models/Progress';
 import Batch from '@/models/Batch';
 import Attendance from '@/models/Attendance';
 import Link from 'next/link';
@@ -39,11 +38,7 @@ async function getDashboardData() {
   const courseStats = await Promise.all(
     courses.map(async (c) => {
       const enrollCount = await Enrollment.countDocuments({ course: c._id, isActive: true });
-      const completedCount = await Progress.countDocuments({ course: c._id, isCompleted: true });
-      const uniqueStudents = await Progress.distinct('student', { course: c._id });
-      const denominator = uniqueStudents.length * (c.totalVideos || 1);
-      const completionRate = denominator > 0 ? Math.min(Math.round((completedCount / denominator) * 100), 100) : 0;
-      return { id: String(c._id), title: c.title, enrollCount, completionRate };
+      return { id: String(c._id), title: c.title, enrollCount };
     })
   );
 
@@ -142,7 +137,7 @@ export default async function AdminDashboard() {
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
             <h2 className="font-semibold text-slate-800 text-sm flex items-center gap-2">
-              <TrendingUp size={14} className="text-indigo-500" /> Course Enrolment & Completion
+              <TrendingUp size={14} className="text-indigo-500" /> Course Enrolment
             </h2>
             <Link href="/admin/analytics" className="text-xs text-indigo-600 hover:underline flex items-center gap-1">
               Full report <ArrowRight size={11} />
@@ -156,22 +151,9 @@ export default async function AdminDashboard() {
           ) : (
             <div className="divide-y divide-slate-100">
               {courseStats.map((c) => (
-                <div key={c.id} className="px-5 py-3.5">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <p className="text-sm font-medium text-slate-800 truncate flex-1 mr-3">{c.title}</p>
-                    <div className="flex items-center gap-3 flex-shrink-0">
-                      <span className="text-xs text-indigo-600 font-bold">{c.enrollCount} enrolled</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all ${c.completionRate >= 70 ? 'bg-green-500' : c.completionRate >= 40 ? 'bg-indigo-500' : 'bg-amber-400'}`}
-                        style={{ width: `${c.completionRate}%` }}
-                      />
-                    </div>
-                    <span className="text-xs text-slate-500 w-9 text-right font-medium">{c.completionRate}%</span>
-                  </div>
+                <div key={c.id} className="px-5 py-3.5 flex items-center justify-between gap-3">
+                  <p className="text-sm font-medium text-slate-800 truncate flex-1">{c.title}</p>
+                  <span className="text-xs text-indigo-600 font-bold flex-shrink-0">{c.enrollCount} enrolled</span>
                 </div>
               ))}
             </div>

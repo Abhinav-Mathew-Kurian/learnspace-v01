@@ -8,7 +8,7 @@ import PromptModal from '@/components/ui/PromptModal';
 import { toast } from 'sonner';
 import { istDate } from '@/lib/ist';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 type TabFilter = 'all' | 'active' | 'expired' | 'banned' | 'deactivated';
 

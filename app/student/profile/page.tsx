@@ -6,7 +6,7 @@ import { istDate, istDateTime } from '@/lib/ist';
 import {
   Mail, Phone, CalendarDays, ShieldCheck, BookOpen,
   CheckCircle2, Clock, Camera, Loader2, XCircle,
-  Pencil, Save, X, TrendingUp, Award, AlertTriangle,
+  Pencil, Save, X, TrendingUp, Award,
   IndianRupee, CalendarClock,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -20,7 +20,6 @@ interface UserData {
 }
 interface Enrollment { _id: string; course: { _id: string; title: string; bannerImage?: string }; enrolledAt: string }
 interface AttendanceRecord { _id: string; session: { title: string; scheduledAt: string } | null; status: 'present' | 'absent' | 'late' }
-interface CourseProgress { courseId: string; title: string; bannerImage?: string; percent: number; done: number; total: number }
 interface CourseInstallment { _id: string; course: { _id: string; title: string }; installmentNumber: number; amount: number; currency: string; dueDate: string; status: 'pending' | 'paid' | 'overdue'; paidAt: string | null }
 
 const STATUS_STYLE: Record<string, string> = { present: 'bg-green-100 text-green-700', absent: 'bg-red-100 text-red-700', late: 'bg-amber-100 text-amber-700' };
@@ -29,9 +28,7 @@ export default function StudentProfilePage() {
   const [user, setUser] = useState<UserData | null>(null);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [attendance, setAttendance] = useState<AttendanceRecord[]>([]);
-  const [courseProgress, setCourseProgress] = useState<CourseProgress[]>([]);
   const [courseInstallments, setCourseInstallments] = useState<CourseInstallment[]>([]);
-  const [completedVideos, setCompletedVideos] = useState(0);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -41,34 +38,17 @@ export default function StudentProfilePage() {
 
   useEffect(() => {
     const load = async () => {
-      const [uRes, eRes, aRes, pRes, ciRes] = await Promise.all([
+      const [uRes, eRes, aRes, ciRes] = await Promise.all([
         fetch('/api/profile'),
         fetch('/api/student/enrollments'),
         fetch('/api/attendance'),
-        fetch('/api/student/progress-summary'),
         fetch('/api/student/course-installments'),
       ]);
-      const [ud, ed, ad, pd, ciD] = await Promise.all([uRes.json(), eRes.json(), aRes.json(), pRes.json(), ciRes.json()]);
+      const [ud, ed, ad, ciD] = await Promise.all([uRes.json(), eRes.json(), aRes.json(), ciRes.json()]);
 
       if (ud.success) { setUser(ud.data); setEditForm({ name: ud.data.name, phone: ud.data.phone ?? '' }); }
-      if (ed.success) {
-        setEnrollments(ed.data);
-        // Fetch per-course progress
-        const progRes = await Promise.all(
-          ed.data.map((e: Enrollment) => fetch(`/api/progress?courseId=${e.course._id}`).then(r => r.json()))
-        );
-        const progressItems: CourseProgress[] = ed.data.map((e: Enrollment, i: number) => {
-          const recs = progRes[i]?.data ?? [];
-          const done = recs.filter((r: { isCompleted: boolean }) => r.isCompleted).length;
-          const pctByVideo = recs.map((r: { percentComplete: number }) => r.percentComplete ?? 0);
-          const total = recs.length; // approximation (completed + in-progress)
-          const pct = pctByVideo.length > 0 ? Math.round(pctByVideo.reduce((s: number, v: number) => s + v, 0) / pctByVideo.length) : 0;
-          return { courseId: e.course._id, title: e.course.title, bannerImage: e.course.bannerImage, percent: pct, done, total };
-        });
-        setCourseProgress(progressItems);
-      }
+      if (ed.success) setEnrollments(ed.data);
       if (ad.success) setAttendance(ad.data.slice(0, 20));
-      if (pd.success) setCompletedVideos(pd.data.completedVideos ?? 0);
       if (ciD.success) setCourseInstallments(ciD.data);
       setLoading(false);
     };
@@ -108,7 +88,6 @@ export default function StudentProfilePage() {
   const absent = attendance.filter(a => a.status === 'absent').length;
   const total = attendance.length;
   const attendancePct = total > 0 ? Math.round(((present + late) / total) * 100) : null;
-  const overallProgress = courseProgress.length > 0 ? Math.round(courseProgress.reduce((s, c) => s + c.percent, 0) / courseProgress.length) : 0;
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
@@ -327,12 +306,11 @@ export default function StudentProfilePage() {
         <div className="lg:col-span-3 space-y-5">
 
           {/* Summary stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             {[
               { icon: <BookOpen size={18} className="text-indigo-500" />, val: enrollments.length, label: 'Courses', color: 'text-indigo-600' },
-              { icon: <CheckCircle2 size={18} className="text-green-500" />, val: completedVideos, label: 'Videos Done', color: 'text-green-600' },
-              { icon: <TrendingUp size={18} className="text-sky-500" />, val: `${overallProgress}%`, label: 'Avg Progress', color: 'text-sky-600' },
               { icon: <Award size={18} className="text-amber-500" />, val: attendancePct !== null ? `${attendancePct}%` : '—', label: 'Attendance', color: attendancePct !== null && attendancePct >= 75 ? 'text-green-600' : attendancePct !== null && attendancePct >= 50 ? 'text-amber-600' : 'text-red-600' },
+              { icon: <TrendingUp size={18} className="text-sky-500" />, val: total, label: 'Sessions Tracked', color: 'text-sky-600' },
             ].map(({ icon, val, label, color }) => (
               <div key={label} className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 text-center">
                 <div className="flex justify-center mb-2">{icon}</div>
@@ -342,32 +320,25 @@ export default function StudentProfilePage() {
             ))}
           </div>
 
-          {/* Course progress */}
+          {/* Enrolled courses */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="px-5 py-4 border-b border-slate-100 flex items-center gap-2">
               <BookOpen size={15} className="text-indigo-500" />
-              <h3 className="font-semibold text-slate-800">Course Progress</h3>
+              <h3 className="font-semibold text-slate-800">Enrolled Courses</h3>
             </div>
-            {courseProgress.length === 0
+            {enrollments.length === 0
               ? <div className="p-8 text-center text-sm text-slate-400">No courses yet.</div>
               : (
                 <div className="divide-y divide-slate-100">
-                  {courseProgress.map(c => (
-                    <Link key={c.courseId} href={`/student/courses/${c.courseId}`} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors group">
-                      {c.bannerImage
-                        ? <img src={c.bannerImage} alt={c.title} className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
+                  {enrollments.map(e => (
+                    <Link key={e._id} href={`/student/courses/${e.course._id}`} className="flex items-center gap-4 px-5 py-3.5 hover:bg-slate-50 transition-colors group">
+                      {e.course.bannerImage
+                        ? <img src={e.course.bannerImage} alt={e.course.title} className="w-10 h-10 rounded-lg object-cover flex-shrink-0" />
                         : <div className="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center flex-shrink-0"><BookOpen size={16} className="text-indigo-400" /></div>
                       }
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-900 group-hover:text-indigo-700 truncate">{c.title}</p>
-                        <div className="flex items-center gap-2 mt-1.5">
-                          <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div className={`h-full rounded-full ${c.percent >= 90 ? 'bg-green-500' : 'bg-indigo-500'}`} style={{ width: `${c.percent}%` }} />
-                          </div>
-                          <span className={`text-xs font-bold flex-shrink-0 ${c.percent >= 90 ? 'text-green-600' : 'text-indigo-600'}`}>{c.percent}%</span>
-                        </div>
+                        <p className="text-sm font-medium text-slate-900 group-hover:text-indigo-700 truncate">{e.course.title}</p>
                       </div>
-                      {c.percent >= 90 && <CheckCircle2 size={16} className="text-green-500 flex-shrink-0" />}
                     </Link>
                   ))}
                 </div>

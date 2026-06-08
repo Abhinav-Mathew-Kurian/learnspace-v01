@@ -4,7 +4,6 @@ import { auth } from '@/lib/auth';
 import { connectDB } from '@/lib/mongodb';
 import Course from '@/models/Course';
 import Video from '@/models/Video';
-import Progress from '@/models/Progress';
 import { extractYouTubeId, validateYouTubeId, fetchTranscript } from '@/lib/youtube';
 import { z } from 'zod';
 
@@ -87,10 +86,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
   }
 
   const videoToDelete = await Video.findById(videoId);
-  await Promise.all([
-    Video.findByIdAndDelete(videoId),
-    Progress.deleteMany({ video: videoId }),
-  ]);
+  await Video.findByIdAndDelete(videoId);
 
   // Only decrement if the deleted video was published
   if (videoToDelete?.isPublished) {

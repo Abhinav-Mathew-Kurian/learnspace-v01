@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Radio, CalendarDays, Clock, ExternalLink, Loader2, Lock, ChevronDown, ChevronUp, CheckCircle2, BookOpen, RefreshCw } from 'lucide-react';
+import { Radio, CalendarDays, Clock, ExternalLink, Loader2, Lock, ChevronDown, ChevronUp, CheckCircle2, BookOpen, RefreshCw, Search } from 'lucide-react';
+import Pagination from '@/components/shared/Pagination';
+
+const ENDED_PAGE_SIZE = 10;
 import { toast } from 'sonner';
 import LiveIndicator from '@/components/shared/LiveIndicator';
 import { addMinutes, isPast, isWithinInterval, formatDistanceToNow, isFuture } from 'date-fns';
@@ -38,6 +41,8 @@ export default function StudentLivePage() {
   const [meetInfo, setMeetInfo] = useState<Record<string, { meetLink: string; meetPassword: string | null }>>({});
   const [expanded, setExpanded] = useState<string | null>(null);
   const [now, setNow] = useState(new Date());
+  const [endedSearch, setEndedSearch] = useState('');
+  const [endedPage, setEndedPage] = useState(1);
 
   const fetchSessions = useCallback(async () => {
     const res = await fetch('/api/live');
@@ -77,6 +82,13 @@ export default function StudentLivePage() {
     (a, b) => new Date(a.scheduledAt).getTime() - new Date(b.scheduledAt).getTime()
   );
   const ended = sessions.filter((s) => getStatus(s) === 'ended');
+  const filteredEnded = ended.filter((s) => {
+    if (!endedSearch.trim()) return true;
+    const q = endedSearch.toLowerCase();
+    return s.title.toLowerCase().includes(q) || s.course?.title.toLowerCase().includes(q) || s.batch?.name.toLowerCase().includes(q);
+  });
+  const endedTotalPages = Math.ceil(filteredEnded.length / ENDED_PAGE_SIZE);
+  const pagedEnded = filteredEnded.slice((endedPage - 1) * ENDED_PAGE_SIZE, endedPage * ENDED_PAGE_SIZE);
 
   if (loading) {
     return (
@@ -141,15 +153,34 @@ export default function StudentLivePage() {
       {/* Past */}
       {ended.length > 0 && (
         <section>
-          <h2 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
-            <CheckCircle2 size={16} className="text-slate-400" /> Past Sessions
-          </h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <h2 className="font-semibold text-slate-800 flex items-center gap-2">
+              <CheckCircle2 size={16} className="text-slate-400" /> Past Sessions
+              <span className="text-sm font-normal text-slate-400">
+                ({filteredEnded.length}{filteredEnded.length !== ended.length ? ` of ${ended.length}` : ''})
+              </span>
+            </h2>
+            <div className="relative self-start sm:self-auto">
+              <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                value={endedSearch}
+                onChange={(e) => { setEndedSearch(e.target.value); setEndedPage(1); }}
+                placeholder="Search past sessions…"
+                className="pl-7 pr-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 w-52"
+              />
+            </div>
+          </div>
           <div className="space-y-2">
-            {ended.map((s) => (
+            {pagedEnded.map((s) => (
               <SessionCard key={s._id} session={s} status="ended" onJoin={join}
                 joining={false} meetInfo={undefined} expanded={false} now={now} />
             ))}
           </div>
+          {endedTotalPages > 1 && (
+            <div className="mt-3 bg-white rounded-xl border border-slate-200">
+              <Pagination currentPage={endedPage} totalPages={endedTotalPages} totalItems={filteredEnded.length} pageSize={ENDED_PAGE_SIZE} onPageChange={setEndedPage} />
+            </div>
+          )}
         </section>
       )}
     </div>

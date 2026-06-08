@@ -9,10 +9,6 @@ test.describe('Security — unauthenticated API access', () => {
     expect(res.status()).toBe(401);
   });
 
-  test('GET /api/progress → 401 without session', async ({ page }) => {
-    const res = await page.request.get('/api/progress');
-    expect(res.status()).toBe(401);
-  });
 
   test('POST /api/ai/ask → 401 without session', async ({ page }) => {
     const res = await page.request.post('/api/ai/ask', {

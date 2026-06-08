@@ -4,12 +4,11 @@ import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
 import Course from '@/models/Course';
 import Enrollment from '@/models/Enrollment';
-import Progress from '@/models/Progress';
 import Attendance from '@/models/Attendance';
 import Video from '@/models/Video';
 import Batch from '@/models/Batch';
 import { istDate } from '@/lib/ist';
-import { Users, BookOpen, TrendingUp, AlertTriangle, Clock, DollarSign, CheckCircle2, BarChart3 } from 'lucide-react';
+import { Users, BookOpen, AlertTriangle, Clock, DollarSign, CheckCircle2, BarChart3, PlayCircle } from 'lucide-react';
 
 async function getAnalytics() {
   await connectDB();
@@ -27,8 +26,6 @@ async function getAnalytics() {
     totalEnrollments,
     activeEnrollments,
     totalVideos,
-    completedProgress,
-    totalProgressRecords,
   ] = await Promise.all([
     User.countDocuments({ role: 'student' }),
     User.countDocuments({ role: 'student', isActive: true, isBanned: false, $or: [{ subscriptionExpiry: null }, { subscriptionExpiry: { $gt: now } }] }),
@@ -41,8 +38,6 @@ async function getAnalytics() {
     Enrollment.countDocuments({}),
     Enrollment.countDocuments({ isActive: true }),
     Video.countDocuments({ isPublished: true }),
-    Progress.countDocuments({ isCompleted: true }),
-    Progress.countDocuments({}),
   ]);
 
   type PopulatedCourse = { _id: mongoose.Types.ObjectId; title: string; totalVideos: number; teacher: { name: string } | null };
@@ -55,40 +50,21 @@ async function getAnalytics() {
 
   const courseIds = courses.map((c) => c._id);
 
-  const [enrollAgg, progressAgg] = await Promise.all([
-    Enrollment.aggregate<{ _id: mongoose.Types.ObjectId; count: number }>([
-      { $match: { course: { $in: courseIds }, isActive: true } },
-      { $group: { _id: '$course', count: { $sum: 1 } } },
-    ]),
-    Progress.aggregate<{ _id: mongoose.Types.ObjectId; completedCount: number; uniqueStudents: mongoose.Types.ObjectId[] }>([
-      { $match: { course: { $in: courseIds } } },
-      { $group: {
-        _id: '$course',
-        completedCount: { $sum: { $cond: ['$isCompleted', 1, 0] } },
-        uniqueStudents: { $addToSet: '$student' },
-      }},
-    ]),
+  const enrollAgg = await Enrollment.aggregate<{ _id: mongoose.Types.ObjectId; count: number }>([
+    { $match: { course: { $in: courseIds }, isActive: true } },
+    { $group: { _id: '$course', count: { $sum: 1 } } },
   ]);
 
   const enrollMap = new Map(enrollAgg.map((e) => [String(e._id), e.count]));
-  const progressMap = new Map(progressAgg.map((p) => [String(p._id), p]));
 
   const courseStats = courses.map((c) => {
     const cid = String(c._id);
-    const enrollCount = enrollMap.get(cid) ?? 0;
-    const prog = progressMap.get(cid);
-    const completedCount = prog?.completedCount ?? 0;
-    const uniqueCount = prog?.uniqueStudents.length ?? 0;
-    const completionRate = uniqueCount > 0
-      ? Math.round((completedCount / (uniqueCount * (c.totalVideos || 1))) * 100)
-      : 0;
     return {
       id: cid,
       title: c.title,
       teacher: c.teacher?.name ?? '—',
       totalVideos: c.totalVideos,
-      enrollCount,
-      completionRate: Math.min(completionRate, 100),
+      enrollCount: enrollMap.get(cid) ?? 0,
     };
   });
 
@@ -132,12 +108,8 @@ async function getAnalytics() {
       subscriptionExpiry: Date | null;
     }>;
 
-  const overallCompletionRate = totalProgressRecords > 0
-    ? Math.round((completedProgress / totalProgressRecords) * 100)
-    : 0;
-
   return {
-    overview: { totalStudents, activeStudents, expiredStudents, bannedUsers, installmentPending, totalTeachers, totalCourses, publishedCourses, totalEnrollments, activeEnrollments, totalVideos, overallCompletionRate },
+    overview: { totalStudents, activeStudents, expiredStudents, bannedUsers, installmentPending, totalTeachers, totalCourses, publishedCourses, totalEnrollments, activeEnrollments, totalVideos },
     courseStats,
     batchStats,
     pendingStudents: pendingStudents.map((s) => ({
@@ -168,8 +140,8 @@ export default async function AnalyticsPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard icon={<Users size={18} className="text-indigo-600" />} label="Total Students" value={overview.totalStudents} sub={`${overview.activeStudents} active`} bg="bg-indigo-50" />
         <StatCard icon={<CheckCircle2 size={18} className="text-green-600" />} label="Active Enrolments" value={overview.activeEnrollments} sub={`${overview.totalEnrollments} total`} bg="bg-green-50" />
-        <StatCard icon={<BookOpen size={18} className="text-sky-600" />} label="Published Courses" value={overview.publishedCourses} sub={`${overview.totalVideos} videos`} bg="bg-sky-50" />
-        <StatCard icon={<TrendingUp size={18} className="text-violet-600" />} label="Completion Rate" value={`${overview.overallCompletionRate}%`} sub="across all videos" bg="bg-violet-50" />
+        <StatCard icon={<BookOpen size={18} className="text-sky-600" />} label="Published Courses" value={overview.publishedCourses} sub={`${overview.totalCourses} total`} bg="bg-sky-50" />
+        <StatCard icon={<PlayCircle size={18} className="text-violet-600" />} label="Published Videos" value={overview.totalVideos} sub="across all courses" bg="bg-violet-50" />
         <StatCard icon={<Clock size={18} className="text-amber-600" />} label="Expired Accounts" value={overview.expiredStudents} sub="need renewal" bg="bg-amber-50" />
         <StatCard icon={<AlertTriangle size={18} className="text-red-500" />} label="Banned Users" value={overview.bannedUsers} sub="all roles" bg="bg-red-50" />
         <StatCard icon={<DollarSign size={18} className="text-orange-500" />} label="Installment Pending" value={overview.installmentPending} sub="students" bg="bg-orange-50" />
@@ -190,25 +162,14 @@ export default async function AnalyticsPage() {
           ) : (
             <div className="divide-y divide-slate-100">
               {courseStats.map((c) => (
-                <div key={c.id} className="px-6 py-4">
-                  <div className="flex items-start justify-between gap-3 mb-2">
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-slate-800 truncate">{c.title}</p>
-                      <p className="text-xs text-slate-400">{c.teacher} · {c.totalVideos} videos</p>
-                    </div>
-                    <div className="text-right flex-shrink-0">
-                      <p className="text-sm font-bold text-indigo-600">{c.enrollCount}</p>
-                      <p className="text-xs text-slate-400">enrolled</p>
-                    </div>
+                <div key={c.id} className="px-6 py-4 flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-slate-800 truncate">{c.title}</p>
+                    <p className="text-xs text-slate-400">{c.teacher} · {c.totalVideos} videos</p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-indigo-500 rounded-full transition-all"
-                        style={{ width: `${c.completionRate}%` }}
-                      />
-                    </div>
-                    <span className="text-xs text-slate-500 w-8 text-right">{c.completionRate}%</span>
+                  <div className="text-right flex-shrink-0">
+                    <p className="text-sm font-bold text-indigo-600">{c.enrollCount}</p>
+                    <p className="text-xs text-slate-400">enrolled</p>
                   </div>
                 </div>
               ))}

@@ -16,7 +16,7 @@ interface StudentRow {
   pct: number | null;
 }
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 10;
 
 export default function StudentList({ students }: { students: StudentRow[] }) {
   const [search, setSearch] = useState('');

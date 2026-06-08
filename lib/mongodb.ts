@@ -13,7 +13,6 @@ import '@/models/Enrollment';
 import '@/models/CourseInstallment';
 import '@/models/LiveSession';
 import '@/models/Attendance';
-import '@/models/Progress';
 import '@/models/Comment';
 import '@/models/CommentDedup';
 import '@/models/Event';

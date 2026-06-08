@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { BookOpen, Plus, Eye, EyeOff, Video, Pencil } from 'lucide-react';
+import { BookOpen, Plus, Eye, EyeOff, Video, Pencil, Search } from 'lucide-react';
 import CreateCourseModal from '@/components/teacher/CreateCourseModal';
+import Pagination from '@/components/shared/Pagination';
+
+const PAGE_SIZE = 10;
 
 interface Course {
   _id: string;
@@ -24,6 +27,8 @@ export default function TeacherCoursesPage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
 
   async function load() {
     setLoading(true);
@@ -34,6 +39,14 @@ export default function TeacherCoursesPage() {
   }
 
   useEffect(() => { load(); }, []);
+
+  const filtered = courses.filter((c) => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return c.title.toLowerCase().includes(q) || (c.category || '').toLowerCase().includes(q);
+  });
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const pagedCourses = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   async function togglePublish(id: string, current: boolean) {
     await fetch(`/api/courses/${id}`, {
@@ -49,15 +62,26 @@ export default function TeacherCoursesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-slate-900">My Courses</h1>
-          <p className="text-sm text-slate-500 mt-0.5">{courses.length} course{courses.length !== 1 ? 's' : ''}</p>
+          <p className="text-sm text-slate-500 mt-0.5">{filtered.length} of {courses.length} course{courses.length !== 1 ? 's' : ''}</p>
         </div>
-        <button
-          onClick={() => setShowCreate(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm"
-        >
-          <Plus size={16} />
-          New Course
-        </button>
+        <div className="flex items-center gap-3 self-start sm:self-auto">
+          <div className="relative">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+              placeholder="Search courses…"
+              className="pl-8 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 w-52"
+            />
+          </div>
+          <button
+            onClick={() => setShowCreate(true)}
+            className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm whitespace-nowrap"
+          >
+            <Plus size={16} />
+            New Course
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -86,9 +110,15 @@ export default function TeacherCoursesPage() {
             <Plus size={14} /> New Course
           </button>
         </div>
+      ) : filtered.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <Search size={32} className="text-slate-300 mb-3" />
+          <p className="text-slate-500 text-sm">No courses match &quot;{search}&quot;</p>
+        </div>
       ) : (
+        <>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5">
-          {courses.map((c) => (
+          {pagedCourses.map((c) => (
             <div key={c._id} className="bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
               {c.bannerImage ? (
                 <img src={c.bannerImage} alt={c.title} className="w-full h-40 object-cover" />
@@ -133,6 +163,12 @@ export default function TeacherCoursesPage() {
             </div>
           ))}
         </div>
+        {totalPages > 1 && (
+          <div className="mt-4 bg-white rounded-xl border border-slate-200">
+            <Pagination currentPage={page} totalPages={totalPages} totalItems={filtered.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
+          </div>
+        )}
+        </>
       )}
 
       {showCreate && (

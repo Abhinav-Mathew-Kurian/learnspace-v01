@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { MessageCircle, CheckCircle2, Mail, Phone, Clock } from 'lucide-react';
 import Pagination from '@/components/shared/Pagination';
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 10;
 
 interface Enquiry {
   _id: string;

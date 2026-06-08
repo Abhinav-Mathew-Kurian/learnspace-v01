@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Plus, Radio, Clock, Users, CalendarDays, ChevronRight, CheckCircle2, Settings2, Loader2, Play, Square } from 'lucide-react';
+import { Plus, Radio, Clock, Users, CalendarDays, ChevronRight, CheckCircle2, Settings2, Loader2, Play, Square, Search } from 'lucide-react';
+import Pagination from '@/components/shared/Pagination';
+
+const ENDED_PAGE_SIZE = 10;
 import LiveIndicator from '@/components/shared/LiveIndicator';
 import CreateBatchModal from '@/components/teacher/CreateBatchModal';
 import ScheduleLiveModal from '@/components/teacher/ScheduleLiveModal';
@@ -65,6 +68,8 @@ export default function TeacherLivePage() {
   const [managingBatch, setManagingBatch] = useState<Batch | null>(null);
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
   const [courses, setCourses] = useState<{ _id: string; title: string }[]>([]);
+  const [endedSearch, setEndedSearch] = useState('');
+  const [endedPage, setEndedPage] = useState(1);
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
@@ -114,6 +119,13 @@ export default function TeacherLivePage() {
   const live = sessions.filter((s) => statusLabel(s) === 'live');
   const upcoming = sessions.filter((s) => statusLabel(s) === 'scheduled');
   const ended = sessions.filter((s) => statusLabel(s) === 'ended');
+  const filteredEnded = ended.filter((s) => {
+    if (!endedSearch.trim()) return true;
+    const q = endedSearch.toLowerCase();
+    return s.title.toLowerCase().includes(q) || s.course?.title.toLowerCase().includes(q) || s.batch?.name.toLowerCase().includes(q);
+  });
+  const endedTotalPages = Math.ceil(filteredEnded.length / ENDED_PAGE_SIZE);
+  const pagedEnded = filteredEnded.slice((endedPage - 1) * ENDED_PAGE_SIZE, endedPage * ENDED_PAGE_SIZE);
 
   if (loading) {
     return (
@@ -215,12 +227,29 @@ export default function TeacherLivePage() {
           {/* Ended */}
           {ended.length > 0 && (
             <section>
-              <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
-                <CheckCircle2 size={15} className="text-slate-400" /> Past Sessions
-              </h3>
-              <div className="space-y-3">
-                {ended.slice(0, 10).map((s) => <SessionCard key={s._id} session={s} status="ended" onAttendance={openAttendance} onStatusChange={updateStatus} updating={updatingStatus === s._id} />)}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+                  <CheckCircle2 size={15} className="text-slate-400" /> Past Sessions
+                  <span className="text-slate-400 font-normal">({filteredEnded.length}{filteredEnded.length !== ended.length ? ` of ${ended.length}` : ''})</span>
+                </h3>
+                <div className="relative">
+                  <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    value={endedSearch}
+                    onChange={(e) => { setEndedSearch(e.target.value); setEndedPage(1); }}
+                    placeholder="Search past sessions…"
+                    className="pl-7 pr-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 w-52"
+                  />
+                </div>
               </div>
+              <div className="space-y-3">
+                {pagedEnded.map((s) => <SessionCard key={s._id} session={s} status="ended" onAttendance={openAttendance} onStatusChange={updateStatus} updating={updatingStatus === s._id} />)}
+              </div>
+              {endedTotalPages > 1 && (
+                <div className="mt-3 bg-white rounded-xl border border-slate-200">
+                  <Pagination currentPage={endedPage} totalPages={endedTotalPages} totalItems={filteredEnded.length} pageSize={ENDED_PAGE_SIZE} onPageChange={setEndedPage} />
+                </div>
+              )}
             </section>
           )}
 

@@ -5,8 +5,9 @@ import CreateUserModal from '@/components/admin/CreateUserModal';
 import Pagination from '@/components/shared/Pagination';
 import PromptModal from '@/components/ui/PromptModal';
 import { toast } from 'sonner';
+import { Search } from 'lucide-react';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 interface Teacher {
   _id: string;
@@ -31,6 +32,7 @@ export default function TeachersPage() {
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('');
   const [banTarget, setBanTarget] = useState<{ id: string; name: string } | null>(null);
   const [pwTarget, setPwTarget] = useState<{ id: string; name: string } | null>(null);
   const [modalLoading, setModalLoading] = useState(false);
@@ -92,8 +94,13 @@ export default function TeachersPage() {
     else toast.error(data.error || 'Password reset failed.');
   }
 
-  const totalPages = Math.ceil(teachers.length / PAGE_SIZE);
-  const displayed = teachers.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const filtered = teachers.filter((t) => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return t.name.toLowerCase().includes(q) || t.email.toLowerCase().includes(q) || (t.specialization || '').toLowerCase().includes(q);
+  });
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const displayed = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
@@ -101,21 +108,32 @@ export default function TeachersPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-800">Teachers</h1>
-          <p className="text-slate-500 text-sm mt-0.5">{teachers.length} total</p>
+          <p className="text-slate-500 text-sm mt-0.5">{filtered.length} of {teachers.length} total</p>
         </div>
+        <div className="flex items-center gap-3 self-start sm:self-auto">
+          <div className="relative">
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+              placeholder="Search by name, email, specialization…"
+              className="pl-8 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 w-64"
+            />
+          </div>
         <button
           onClick={() => setShowCreate(true)}
-          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors self-start sm:self-auto"
+          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
         >
           + Add Teacher
         </button>
+        </div>
       </div>
 
       {loading ? (
         <div className="space-y-3">
           {[...Array(3)].map((_, i) => <div key={i} className="h-16 bg-slate-100 rounded-xl animate-pulse" />)}
         </div>
-      ) : displayed.length === 0 && teachers.length === 0 ? (
+      ) : displayed.length === 0 ? (
         <div className="bg-white rounded-xl border border-slate-200 p-10 text-center text-slate-400 text-sm">
           No teachers found.
         </div>
@@ -123,7 +141,7 @@ export default function TeachersPage() {
         <>
           {/* ── Mobile cards (hidden on md+) ── */}
           <div className="md:hidden space-y-3">
-            {teachers.map((t) => (
+            {displayed.map((t) => (
               <div key={t._id} className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <div className="min-w-0">
@@ -172,7 +190,7 @@ export default function TeachersPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {teachers.map((t) => (
+                {displayed.map((t) => (
                   <tr key={t._id} className="hover:bg-slate-50">
                     <td className="px-4 py-3 font-medium text-slate-800">{t.name}</td>
                     <td className="px-4 py-3 text-slate-500">{t.email}</td>

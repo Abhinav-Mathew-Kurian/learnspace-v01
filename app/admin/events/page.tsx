@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Plus, Trash2, CalendarDays, MapPin, Link2, Users, Loader2, Filter } from 'lucide-react';
+import { Plus, Trash2, CalendarDays, MapPin, Link2, Users, Loader2, Filter, Search } from 'lucide-react';
 import CreateEventModal from '@/components/admin/CreateEventModal';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import { toast } from 'sonner';
 import { istDateTime, istTime } from '@/lib/ist';
 import Pagination from '@/components/shared/Pagination';
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 10;
 
 interface GuestLecturer { name: string }
 interface Batch { name: string }
@@ -40,6 +40,7 @@ export default function AdminEventsPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [typeFilter, setTypeFilter] = useState('');
   const [audienceFilter, setAudienceFilter] = useState('');
+  const [search, setSearch] = useState('');
   const [deleting, setDeleting] = useState<string | null>(null);
   const [confirmId, setConfirmId] = useState<string | null>(null);
   const [page, setPage] = useState(1);
@@ -68,6 +69,10 @@ export default function AdminEventsPage() {
   const filtered = events.filter((e) => {
     if (typeFilter && e.type !== typeFilter) return false;
     if (audienceFilter && e.audience !== audienceFilter) return false;
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      if (!e.title.toLowerCase().includes(q) && !(e.description || '').toLowerCase().includes(q)) return false;
+    }
     return true;
   });
 
@@ -88,7 +93,16 @@ export default function AdminEventsPage() {
 
       {/* Filters */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mb-6 flex items-center gap-3 flex-wrap">
-        <Filter size={14} className="text-slate-400" />
+        <Filter size={14} className="text-slate-400 flex-shrink-0" />
+        <div className="relative">
+          <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            placeholder="Search events…"
+            className="pl-7 pr-3 py-1.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 w-44"
+          />
+        </div>
         <select value={typeFilter} onChange={(e) => { setTypeFilter(e.target.value); setPage(1); }}
           className="border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white">
           <option value="">All Types</option>
@@ -102,7 +116,7 @@ export default function AdminEventsPage() {
           <option value="students">Students</option>
           <option value="batch">Batch</option>
         </select>
-        <span className="ml-auto text-sm text-slate-400">{filtered.length} event{filtered.length !== 1 ? 's' : ''}</span>
+        <span className="ml-auto text-sm text-slate-400">{filtered.length} of {events.length} event{events.length !== 1 ? 's' : ''}</span>
       </div>
 
       {loading ? (

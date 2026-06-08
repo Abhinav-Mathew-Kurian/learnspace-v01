@@ -29,7 +29,7 @@ const STATUS_ICON = {
   late:    <Clock size={11} />,
 };
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 10;
 
 type ViewMode = 'session' | 'records';
 

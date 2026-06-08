@@ -45,18 +45,4 @@ test.describe('Student flows', () => {
     expect(downloadUrls.length).toBe(0);
   });
 
-  test('GET /api/progress returns only this student\'s records', async ({ studentPage }) => {
-    const response = await studentPage.request.get('/api/progress');
-    expect(response.status()).toBe(200);
-    const body = await response.json() as { data: Array<{ student: string }> };
-    // All returned records must belong to this student (server enforces it)
-    // We just check the API returns successfully and data is an array
-    expect(Array.isArray(body.data)).toBe(true);
-  });
-
-  test('unauthenticated GET /api/progress → 401', async ({ page }) => {
-    // Fresh page without auth cookies
-    const response = await page.request.get('/api/progress');
-    expect(response.status()).toBe(401);
-  });
 });

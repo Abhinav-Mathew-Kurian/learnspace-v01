@@ -8,10 +8,7 @@ interface Props {
   videoId: string;
   videoDbId: string;
   courseId: string;
-  initialPosition: number;
-  initialWatched: number;
-  totalSeconds: number;
-  isEnrolled: boolean;
+  totalSeconds?: number;
   prevVideoUrl?: string;
   nextVideoUrl?: string;
 }

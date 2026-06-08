@@ -5,7 +5,6 @@ import { connectDB } from '@/lib/mongodb';
 import Course from '@/models/Course';
 import Video from '@/models/Video';
 import Enrollment from '@/models/Enrollment';
-import Progress from '@/models/Progress';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Lock } from 'lucide-react';
@@ -43,18 +42,6 @@ export default async function VideoPage({
   const isFirstVideo = allVideos[0]?._id.toString() === videoId;
   if (!isEnrolled && !isFirstVideo) notFound();
 
-  const progress = isEnrolled
-    ? await Progress.findOne({ student: session!.user.id, video: videoId })
-    : null;
-
-  const allProgress = isEnrolled
-    ? await Progress.find({ student: session!.user.id, course: id })
-    : [];
-
-  const completedVideoIds = new Set(
-    allProgress.filter((p) => p.isCompleted).map((p) => p.video.toString())
-  );
-
   const currentIndex = allVideos.findIndex((v) => v._id.toString() === videoId);
 
   const prevVideo = isEnrolled && currentIndex > 0 ? allVideos[currentIndex - 1] : null;
@@ -67,12 +54,10 @@ export default async function VideoPage({
     title: v.title,
     accessible: isEnrolled || i === 0,
     isCurrent: v._id.toString() === videoId,
-    isDone: completedVideoIds.has(v._id.toString()),
     index: i,
   }));
 
   return (
-    // On mobile: single column (flex-col), on desktop: side-by-side
     <div className="flex flex-col lg:flex-row lg:h-full lg:overflow-hidden">
       {/* ── Main: video + info (scrollable on desktop) ── */}
       <div className="flex-1 min-w-0 min-h-0 lg:overflow-y-auto">
@@ -88,10 +73,7 @@ export default async function VideoPage({
             videoId={video.youtubeId}
             videoDbId={videoId}
             courseId={id}
-            initialPosition={progress?.lastPosition ?? 0}
-            initialWatched={progress?.watchedSeconds ?? 0}
             totalSeconds={video.duration}
-            isEnrolled={isEnrolled}
             prevVideoUrl={prevVideoUrl}
             nextVideoUrl={nextVideoUrl}
           />
@@ -121,7 +103,7 @@ export default async function VideoPage({
         </div>
       </div>
 
-      {/* ── Chapter sidebar (mobile: accordion, desktop: fixed right panel) ── */}
+      {/* ── Chapter sidebar ── */}
       <ChapterSidebar
         videos={chapterVideos}
         courseTitle={course.title}
@@ -130,7 +112,7 @@ export default async function VideoPage({
         courseId={id}
       />
 
-      {/* Floating AI assistant — video-mode when on a specific video page */}
+      {/* Floating AI assistant */}
       {isEnrolled && (
         <AiAssistant
           courseId={id}

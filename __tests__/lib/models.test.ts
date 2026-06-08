@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import User from '@/models/User';
 import Course from '@/models/Course';
 import Video from '@/models/Video';
-import Progress from '@/models/Progress';
+
 import Comment from '@/models/Comment';
 import Enrollment from '@/models/Enrollment';
 import Rating from '@/models/Rating';
@@ -135,66 +135,6 @@ describe('Video model', () => {
   });
 });
 
-describe('Progress model', () => {
-  let studentId: mongoose.Types.ObjectId;
-  let videoId: mongoose.Types.ObjectId;
-  let courseId: mongoose.Types.ObjectId;
-
-  beforeAll(async () => {
-    const teacher = await User.create({
-      name: 'ProgTeacher',
-      email: 'progteacher@progress.test',
-      password: 'hash',
-      role: 'teacher',
-    });
-    const student = await User.create({
-      name: 'ProgStudent',
-      email: 'progstudent@progress.test',
-      password: 'hash',
-      role: 'student',
-    });
-    const course = await Course.create({
-      title: 'Progress Course',
-      description: 'Course for progress tests',
-      teacher: teacher._id,
-    });
-    const video = await Video.create({
-      course: course._id,
-      title: 'Progress Video',
-      youtubeId: 'progVideo1234',
-      order: 1,
-    });
-    studentId = student._id;
-    videoId = video._id;
-    courseId = course._id;
-  });
-
-  it('can set percentComplete', async () => {
-    const progress = await Progress.create({
-      student: studentId,
-      video: videoId,
-      course: courseId,
-      watchedSeconds: 50,
-      totalSeconds: 100,
-      percentComplete: 50,
-    });
-    expect(progress.percentComplete).toBe(50);
-  });
-
-  it('isCompleted can be set to true', async () => {
-    const s2 = await User.create({ name: 'S2', email: 's2@progress.test', password: 'hash', role: 'student' });
-    const progress = await Progress.create({
-      student: s2._id,
-      video: videoId,
-      course: courseId,
-      watchedSeconds: 95,
-      totalSeconds: 100,
-      percentComplete: 95,
-      isCompleted: true,
-    });
-    expect(progress.isCompleted).toBe(true);
-  });
-});
 
 describe('Comment model', () => {
   let userId: mongoose.Types.ObjectId;
