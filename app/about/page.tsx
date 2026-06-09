@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Target, Heart, Zap, Lock } from 'lucide-react';
+import { ArrowLeft, Target, Heart, Zap, Lock, ExternalLink } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About Us',
-  description: 'Learn about Howlfox Academy — our mission, values, and the team behind the platform.',
+  description: 'Learn about Howlfox Academy — our mission, values, and our parent company Howlfox.',
 };
 
 export default function AboutPage() {
@@ -36,7 +36,7 @@ export default function AboutPage() {
 
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-6">About Howlfox Academy</h1>
           <p className="text-xl text-slate-500 leading-relaxed mb-12">
-            Howlfox Academy is a private online course platform built for small, focused learning communities — think coaching institutes, boot camps, and private tutoring setups.
+            Howlfox Academy is the education arm of Howlfox — a Kerala-based branding and digital services company. We bring the same creative expertise from the agency floor directly into structured, expert-led learning experiences.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-16">
@@ -52,7 +52,7 @@ export default function AboutPage() {
           <div className="prose prose-slate max-w-none">
             <h2 className="text-2xl font-bold text-slate-900 mb-4">Why we built this</h2>
             <p className="text-slate-600 leading-relaxed mb-6">
-              Most online learning platforms are built for massive scale — thousands of courses, millions of students, and a marketplace mindset. That&apos;s great for discovery, but terrible for the focused, personal learning experience that small institutions provide.
+              Most online learning platforms are built for massive scale — thousands of courses, millions of students, and a marketplace mindset. That&apos;s great for discovery, but terrible for the focused, personal learning experience that real professionals provide.
             </p>
             <p className="text-slate-600 leading-relaxed mb-6">
               Howlfox Academy is different. It&apos;s invite-only by design. There&apos;s no self-registration, no marketplace, no algorithm recommending random courses. Your admin creates your account, assigns you to the right courses, and you get exactly what you need — nothing more, nothing less.
@@ -60,14 +60,32 @@ export default function AboutPage() {
             <p className="text-slate-600 leading-relaxed mb-10">
               It&apos;s built for institutions that know their students by name.
             </p>
+          </div>
 
-            <h2 className="text-2xl font-bold text-slate-900 mb-4">The stack</h2>
-            <p className="text-slate-600 leading-relaxed mb-4">
-              Howlfox Academy is built with modern, production-grade technology — Next.js 14 with the App Router, MongoDB Atlas, NextAuth v5 for authentication, Cloudinary for media, and OpenRouter for the AI assistant.
-            </p>
-            <p className="text-slate-600 leading-relaxed">
-              Video hosting uses YouTube unlisted embeds — keeping storage costs zero while delivering smooth playback with full progress tracking via the YouTube IFrame API.
-            </p>
+          {/* Parent company section */}
+          <div className="mt-12 rounded-2xl border border-slate-200 overflow-hidden">
+            <div className="bg-slate-900 px-8 py-6">
+              <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">Part of the Howlfox family</p>
+              <h2 className="text-2xl font-extrabold text-white">Howlfox</h2>
+              <p className="text-slate-400 text-sm mt-1">Branding &amp; Digital Services · Kerala, India</p>
+            </div>
+            <div className="px-8 py-7 bg-white">
+              <p className="text-slate-600 leading-relaxed mb-4">
+                Howlfox Academy is a subsidiary of <strong className="text-slate-800">Howlfox</strong> — a Kerala-based creative agency that combines strategy with storytelling to make brands heard, loud and clear. Whether working with startups chasing the spotlight or established brands ready for reinvention, Howlfox doesn&apos;t just advertise — it crafts stories that resonate.
+              </p>
+              <p className="text-slate-600 leading-relaxed mb-6">
+                The agency offers end-to-end branding, digital marketing, creative design, advertising, and print solutions — serving businesses across Kerala with passion and precision. Howlfox Academy was built to share that expertise directly with students and professionals who want to learn the craft from the inside.
+              </p>
+              <a
+                href="https://howlfox.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors"
+              >
+                Visit Howlfox
+                <ExternalLink size={14} />
+              </a>
+            </div>
           </div>
 
           <div className="mt-16 pt-10 border-t border-slate-100 text-center">
