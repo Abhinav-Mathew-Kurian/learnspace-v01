@@ -5,6 +5,7 @@ import { Search } from 'lucide-react';
 import CreateUserModal from '@/components/admin/CreateUserModal';
 import Pagination from '@/components/shared/Pagination';
 import PromptModal from '@/components/ui/PromptModal';
+import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import { toast } from 'sonner';
 import { istDate } from '@/lib/ist';
 
@@ -59,6 +60,7 @@ export default function StudentsPage() {
   const [page, setPage] = useState(1);
   const [banTarget, setBanTarget] = useState<{ id: string; name: string } | null>(null);
   const [pwTarget, setPwTarget] = useState<{ id: string; name: string } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
   const [modalLoading, setModalLoading] = useState(false);
 
   async function load() {
@@ -101,6 +103,16 @@ export default function StudentsPage() {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ isActive: !isActive }),
     });
+    load();
+  }
+
+  async function handleDelete() {
+    if (!deleteTarget) return;
+    setModalLoading(true);
+    await fetch(`/api/admin/users/${deleteTarget.id}`, { method: 'DELETE' });
+    setModalLoading(false);
+    toast.success(`${deleteTarget.name} has been deleted.`);
+    setDeleteTarget(null);
     load();
   }
 
@@ -279,6 +291,7 @@ export default function StudentsPage() {
                     {s.isBanned ? 'Unban' : 'Ban'}
                   </button>
                   <button onClick={() => setPwTarget({ id: s._id, name: s.name })} className="text-xs text-amber-600 font-medium">Reset PW</button>
+                  <button onClick={() => setDeleteTarget({ id: s._id, name: s.name })} className="text-xs text-red-600 font-medium">Delete</button>
                 </div>
               </div>
             ))}
@@ -355,6 +368,7 @@ export default function StudentsPage() {
                           {s.isBanned ? 'Unban' : 'Ban'}
                         </button>
                         <button onClick={() => setPwTarget({ id: s._id, name: s.name })} className="text-xs text-amber-600 hover:text-amber-800 underline">Reset PW</button>
+                        <button onClick={() => setDeleteTarget({ id: s._id, name: s.name })} className="text-xs text-red-600 hover:text-red-800 underline">Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -393,6 +407,16 @@ export default function StudentsPage() {
         loading={modalLoading}
         onSubmit={handlePasswordSubmit}
         onCancel={() => setPwTarget(null)}
+      />
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Delete Student"
+        message={`Are you sure you want to permanently delete ${deleteTarget?.name ?? 'this student'}? This cannot be undone.`}
+        confirmLabel="Delete"
+        loading={modalLoading}
+        onConfirm={handleDelete}
+        onCancel={() => setDeleteTarget(null)}
       />
     </div>
   );
