@@ -7,12 +7,6 @@ import Image from 'next/image';
 import { AlertCircle, Eye, EyeOff, ArrowRight, ShieldAlert, Clock, UserX } from 'lucide-react';
 import Link from 'next/link';
 
-const DEMO_ACCOUNTS = [
-  { role: 'Admin',   email: 'admin@howlfoxacademy.com',   password: 'admin123',   gradient: 'from-violet-500 to-indigo-600' },
-  { role: 'Teacher', email: 'teacher@howlfoxacademy.com', password: 'teacher123', gradient: 'from-sky-500 to-blue-600'      },
-  { role: 'Student', email: 'student@howlfoxacademy.com', password: 'student123', gradient: 'from-emerald-500 to-teal-600' },
-];
-
 interface LoginError {
   type: 'banned' | 'expired' | 'deactivated' | 'invalid';
   message?: string;
@@ -54,10 +48,6 @@ function LoginForm() {
     if (role === 'admin') router.push('/admin/dashboard');
     else if (role === 'teacher') router.push('/teacher/dashboard');
     else router.push('/student/dashboard');
-  }
-
-  function fill(acc: typeof DEMO_ACCOUNTS[0]) {
-    setEmail(acc.email); setPassword(acc.password); setLoginError(null);
   }
 
   return (
@@ -205,33 +195,6 @@ function LoginForm() {
               }
             </button>
           </form>
-
-          {/* Demo accounts */}
-          <div className="mt-8">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex-1 h-px bg-slate-100" />
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Demo Accounts</span>
-              <div className="flex-1 h-px bg-slate-100" />
-            </div>
-
-            <div className="grid grid-cols-3 gap-2.5">
-              {DEMO_ACCOUNTS.map(acc => (
-                <button
-                  key={acc.role} type="button" onClick={() => fill(acc)}
-                  className="group flex flex-col items-center gap-2 px-3 py-3.5 rounded-xl border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/40 bg-slate-50 transition-all"
-                >
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${acc.gradient} flex items-center justify-center shadow-sm`}>
-                    <span className="text-white font-black text-sm">{acc.role[0]}</span>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-xs font-bold text-slate-700 group-hover:text-indigo-700 transition-colors">{acc.role}</p>
-                    <p className="text-[10px] text-slate-400 font-mono mt-0.5">{acc.password}</p>
-                  </div>
-                </button>
-              ))}
-            </div>
-            <p className="text-[11px] text-slate-400 text-center mt-3">Click any role to auto-fill</p>
-          </div>
 
           <p className="text-center text-[11px] text-slate-400 mt-6 leading-relaxed">
             No self-registration · Contact your admin for access
