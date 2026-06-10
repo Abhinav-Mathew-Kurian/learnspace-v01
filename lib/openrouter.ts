@@ -1,13 +1,11 @@
-// Ordered fastest-first. Small/fast models handle course Q&A perfectly well.
-// Large models (120B/550B) are slow on free shared compute and sit in long
-// queues — keep them only as last-resort fallbacks.
+// Ordered fastest-first. These are verified free-tier models on OpenRouter.
 const FREE_MODELS = [
-  'meta-llama/llama-3.1-8b-instruct:free',    // 8B  — fastest, most reliable
-  'mistralai/mistral-7b-instruct:free',        // 7B  — fast, original spec choice
-  'nvidia/nemotron-nano-9b-v2:free',           // 9B  — fast NVIDIA nano
-  'google/gemma-4-26b-a4b-it:free',           // 26B — medium fallback
-  'z-ai/glm-4.5-air:free',                    // GLM 4.5 fallback
-  'nvidia/nemotron-3-super-120b-a12b:free',   // 120B — slow, last resort
+  'meta-llama/llama-3.1-8b-instruct:free',   // 8B  — fastest, most reliable
+  'meta-llama/llama-3.2-3b-instruct:free',   // 3B  — very fast fallback
+  'google/gemma-2-9b-it:free',               // 9B  — reliable Google model
+  'mistralai/mistral-7b-instruct:free',      // 7B  — stable fallback
+  'qwen/qwen-2.5-7b-instruct:free',          // 7B  — good quality, fast
+  'microsoft/phi-3-mini-128k-instruct:free', // 3.8B — long-context fallback
 ];
 
 const RETRYABLE_PHRASES = [

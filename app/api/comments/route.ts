@@ -45,8 +45,14 @@ export async function GET(req: NextRequest) {
   }
 
   const filter: Record<string, unknown> = { isDeleted: false, parentComment: null };
-  if (courseId) filter.course = courseId;
-  if (videoId)  filter.video  = videoId;
+  if (videoId) {
+    filter.video = videoId;
+  } else if (courseId) {
+    // Course-level discussion only — exclude video-scoped comments
+    // (video comments store both course+video, so without this they'd bleed in)
+    filter.course = courseId;
+    filter.video = null;
+  }
 
   const [total, topLevel] = await Promise.all([
     Comment.countDocuments(filter),
