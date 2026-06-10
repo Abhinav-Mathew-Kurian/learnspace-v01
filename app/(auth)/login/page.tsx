@@ -112,41 +112,44 @@ function LoginForm() {
             <Image src="/images/logo/HOWLFOOX-LOGO4.svg" alt="Howlfox Academy" width={108} height={99} className="h-12 w-auto object-contain" />
             <div className="flex flex-col leading-none gap-0.5">
               <Image src="/images/logo/HOWLFOOXTEXT.svg" alt="Howlfox" width={145} height={54} className="h-6 w-auto object-contain" />
-              <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 pl-0.5">Academy</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 pl-0.5">Academy</span>
             </div>
           </Link>
 
           {/* Heading */}
           <div className="mb-8">
             <h2 className="text-2xl font-black text-slate-900 mb-1">Sign in</h2>
-            <p className="text-sm text-slate-400">Enter your credentials to access your account.</p>
+            <p className="text-sm text-slate-500">Enter your credentials to access your account.</p>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-1.5">Email</label>
+              <label htmlFor="login-email" className="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-1.5">Email</label>
               <input
+                id="login-email"
                 type="email" required autoComplete="email"
                 value={email} onChange={e => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-900 text-sm placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                 suppressHydrationWarning
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-1.5">Password</label>
+              <label htmlFor="login-password" className="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-1.5">Password</label>
               <div className="relative">
                 <input
+                  id="login-password"
                   type={showPw ? 'text' : 'password'} required autoComplete="current-password"
                   value={password} onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full px-4 py-3 pr-11 rounded-xl border border-slate-200 text-slate-900 text-sm placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                  className="w-full px-4 py-3 pr-11 rounded-xl border border-slate-200 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                   suppressHydrationWarning
                 />
-                <button type="button" tabIndex={-1} onClick={() => setShowPw(p => !p)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 transition-colors" suppressHydrationWarning>
+                <button type="button" tabIndex={0} onClick={() => setShowPw(p => !p)}
+                  aria-label={showPw ? 'Hide password' : 'Show password'}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors" suppressHydrationWarning>
                   {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
@@ -196,7 +199,7 @@ function LoginForm() {
             </button>
           </form>
 
-          <p className="text-center text-[11px] text-slate-400 mt-6 leading-relaxed">
+          <p className="text-center text-[11px] text-slate-500 mt-6 leading-relaxed">
             No self-registration · Contact your admin for access
           </p>
         </div>
